@@ -88,39 +88,19 @@ cd "$dofiles"
 ******************************************
 ** 1. DATA PROCESSING
 ******************************************
-/*
-do "1.0. ${proj}_${tool}_Decryption.do"
-cd "$dofiles"
-do "1.1. ${proj}_${tool}_Export.do"
-cd "$dofiles"
-do "1.2. ${proj}_${tool}_Corrections_Data.do"
-cd "$dofiles"
-do "1.3. ${proj}_${tool}_Clean_Data.do"
-cd "$dofiles"
-do "1.4. ${proj}_${tool}_Data_Protection.do"
-cd "$dofiles"
-do "2.0. ${proj}_${tool}_Encryption.do"
-/*
+
 ******************************************
 * 2. FIELDWORK PROGRESS
 ******************************************
-do "2.1. ${proj}_${tool}_Progress.do"
-cd "$dofiles"
-*do "2.2. ${proj}_${tool}_Incentives.do"
-*cd "$dofiles"
+
 
 ******************************************
 ** 3. DATA CHECKS
 ******************************************
-do "3.1. ${proj}_${tool}_Interview.do"
-cd "$dofiles"
-do "3.2. ${proj}_${tool}_Enumerator.do"
-cd "$dofiles"
+
 ******************************************
 ** 4. PRELIMINARY ANALYSIS
 ******************************************
-do "4.1. ${proj}_${tool}_EM.do"
-*/
-*/
+
 
 di "Ran Successfully!"
