@@ -32,7 +32,7 @@ global encrypted_drive "H"
 global encrypted_path "$encrypted_drive:"
 global scto_download "H:\scto\P20204b_GMB_Local\Endline\C1\Youth"
 global project_folder "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\"
-global dofiles "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\01_DoFiles\Field Data Management\/$round\/$cycle\/$tool\"
+global dofiles "C:\Users\/`c(username)'\Documents\GitHub\P20204_GMB\P20204_GMB\dofiles"
 global surveycto "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\SurveyCTO Sync\"
 global exported "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\exported"
 global corrections "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\corrections"
@@ -78,7 +78,7 @@ global local_path "C:\Users\/`c(username)'\OneDrive - C4ED\Dokumente\Desktop\P20
 n: di "Hi `c(username)'!"
 
 cd "$dofiles"
-*ex
+ex
 }
 
 
