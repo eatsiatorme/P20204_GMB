@@ -67,7 +67,7 @@ foreach file in `files'{
 ***************************
 
 clear
-cd "$dofiles"
+cd "$local_path"
 
 
 do "1.0.1. import_Tekki_Fii_PV.do"
