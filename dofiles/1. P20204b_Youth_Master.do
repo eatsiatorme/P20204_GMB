@@ -30,34 +30,35 @@ global tool "Youth"
 //Data Management
 global encrypted_drive "H"
 global encrypted_path "$encrypted_drive:"
-global scto_download "H:\scto\P20204b_GMB_Local\Endline\C1\Youth"
+*global scto_download "H:\scto\P20204b_GMB_Local\Endline\C1\Youth"
 global project_folder "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\"
-global dofiles "C:\Users\/`c(username)'\Documents\GitHub\P20204_GMB\P20204_GMB\dofiles"
-global surveycto "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\SurveyCTO Sync\"
-global exported "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\exported"
-global corrections "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\corrections"
-global mis "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\misc"
-global cleaning "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\cleaning"
-global pii "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\PII"
-global qx "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\01_Midline\Programming\Tekki_Fii_PV_210502.xlsx" // improve this
-global tables "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\03_Tables_Graphs\"
-global sample_list "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\01_Midline\Programming\Sample\"
-global incentives "$ONEDRIVE\P20204b_EUTF_GMB - Documents\04_Field Work\Incentives Number\"
-global field_work_reports "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\/$round\/$cycle\/$tool\"
-global scto_server "mannheimc4ed"
-global bl_data "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\Baseline\Cleaned Merge"
-global errorfile "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\C1\Youth\error datasets"
-global id
-global checking_log "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\C1\Youth\checking_log/"
-global main_table "Tekki_Fii_PV"
-local checksheet "${main_table}_CHECKS"
+
+*global surveycto "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\SurveyCTO Sync\"
+global exported "$encrypted_path\exported"
+global corrections "$encrypted_path\corrections"
+*global mis "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\misc"
+global cleaning "$encrypted_path\cleaning"
+*global pii "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\PII"
+*global qx "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\01_Midline\Programming\Tekki_Fii_PV_210502.xlsx" // improve this
+*global tables "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\03_Tables_Graphs\"
+*global sample_list "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\01_Midline\Programming\Sample\"
+*global incentives "$ONEDRIVE\P20204b_EUTF_GMB - Documents\04_Field Work\Incentives Number\"
+*global field_work_reports "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\/$round\/$cycle\/$tool\"
+*global scto_server "mannheimc4ed"
+*global bl_data "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\Baseline\Cleaned Merge"
+*global errorfile "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\C1\Youth\error datasets"
+*global id
+*global checking_log "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\C1\Youth\checking_log/"
+global main_table "Tekki_Fii_PV_3"
+*local checksheet "${main_table}_CHECKS"
+
 
 global key_outcome "wrk_cntr num_empl spe_score brs_score current_inc sum_inc_reference current_bus employed_stable_ever employed_ilo" // Key outcome variables - add to from clean dataset
 global key_outcome_outlier "ave_month_inc emp_inc_month_? emp_inkind_month_? profit_month_? c2 c4" // Key outcome variables - add to from clean dataset
 global enumerator_check_vars "b2 tekkifii_check tekkifii_check_ind j1a j1b"
 
 if "`c(username)'"=="NathanSivewright" { 
-
+global dofiles "C:\Users\/`c(username)'\Documents\GitHub\P20204_GMB\dofiles"
 capture mkdir "C:\Users\/`c(username)'\Desktop\P20204b_GMB_Local\"
 capture mkdir "C:\Users\/`c(username)'\Desktop\P20204b_GMB_Local\/$round\"
 capture mkdir "C:\Users\/`c(username)'\Desktop\P20204b_GMB_Local\/$round\/$cycle\"
@@ -68,6 +69,7 @@ global local_path "C:\Users\/`c(username)'\Desktop\P20204b_GMB_Local\/$round\/$c
 
 if "`c(username)'"=="ElikplimAtsiatorme" {
 // Making local folder on desktop for data
+global dofiles "C:\Users\/`c(username)'\Documents\GitHub\P20204_GMB\P20204_GMB\dofiles"
 capture mkdir "C:\Users\/`c(username)'\OneDrive - C4ED\Dokumente\Desktop\P20204b_GMB_Local\"
 capture mkdir "C:\Users\/`c(username)'\OneDrive - C4ED\Dokumente\Desktop\P20204b_GMB_Local\/$round\"
 capture mkdir "C:\Users\/`c(username)'\OneDrive - C4ED\Dokumente\Desktop\P20204b_GMB_Local\/$round\/$cycle\"
@@ -75,20 +77,26 @@ capture mkdir "C:\Users\/`c(username)'\OneDrive - C4ED\Dokumente\Desktop\P20204b
 global local_path "C:\Users\/`c(username)'\OneDrive - C4ED\Dokumente\Desktop\P20204b_GMB_Local\/$round\/$cycle\/$tool\"
 }
 
+
+global media_path "$local_path\media"
+
 n: di "Hi `c(username)'!"
 
 cd "$dofiles"
-ex
+
 }
-
-
 
 
 
 ******************************************
 ** 1. DATA PROCESSING
 ******************************************
-
+*do "1.0. P20204b_Youth_Decryption.do"
+cd "$dofiles"
+do "1.1. P20204b_Youth_Export.do"
+cd "$dofiles"
+do "1.2. P20204b_Youth_Clean_Data.do"
+cd "$dofiles"
 ******************************************
 * 2. FIELDWORK PROGRESS
 ******************************************
