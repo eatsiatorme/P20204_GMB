@@ -16,20 +16,6 @@
 n: di "This could take a minute or two... Go and get a coffee"
 
 ***************************
-**  erase files in local_path **
-***************************
-/*
-local deletepathexp = "$scto_download\/"
-local dtafiles : dir "`deletepathexp'" file "*.dta", respectcase	
-local jsonfiles : dir "`deletepathexp'" file "*.json", respectcase	
-local csvfiles : dir "`deletepathexp'" file "*.csv", respectcase
-foreach file in `dtafiles' `jsonfiles' `csvfiles' {	
-	local fileandpathtodelete = "`deletepathexp'"+"`file'"
-	capture erase "`fileandpathtodelete'"
-}
-*/
-
-***************************
 **  erase files in export **
 ***************************
 local deletepathexp = "$exported\/"
@@ -70,7 +56,7 @@ clear
 cd "$local_path"
 
 
-do "1.0.1. import_Tekki_Fii_PV.do"
+do "import_Tekki_Fii_PV_3.do"
 
 ******************************
 **Copy Files to Exported**
