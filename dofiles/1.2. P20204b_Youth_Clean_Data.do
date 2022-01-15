@@ -868,7 +868,7 @@ while "`*'" != "" {
 	local bill = ""
 	capture unab bill : `1'_*
 	di "XXXX: `bill'"
-	local h `: word count `bort''
+	local h `: word count `bill''
 	di "`h'"	
 	if `h' > 0 {	
 			foreach var of varlist `1'_* {

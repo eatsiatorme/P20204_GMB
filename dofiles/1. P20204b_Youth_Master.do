@@ -91,7 +91,7 @@ cd "$dofiles"
 ******************************************
 ** 1. DATA PROCESSING AND PREPARATION
 ******************************************
-do "1.0. P20204b_Youth_Decryption.do"
+*do "1.0. P20204b_Youth_Decryption.do"
 cd "$dofiles"
 do "1.1. P20204b_Youth_Export.do"
 cd "$dofiles"
