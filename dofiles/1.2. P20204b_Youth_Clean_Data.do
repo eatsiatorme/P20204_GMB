@@ -43,9 +43,18 @@ foreach file of local files{
 use "$main_table", clear
 
 
-
+**************************************************
+* MERGING IN MEDIA
+**************************************************
 
 ctomergecom, fn(commentsx) mediapath("$media_path")
+
+tamerge text_audit, media("$local_path")
+foreach var of varlist ta_* {
+	local varorig = subinstr("`var'", "ta_", "", 1)
+	label variable `var' "Total duration on `varorig'"
+	
+}
 
 
 **************************************************
@@ -77,14 +86,17 @@ emp_ilo
 #d cr
 
 
+ds, has(type numeric)
+foreach var of varlist `r(varlist)' {
+  mvdecode `var', mv(-97 = .a \ -98 = .b \ -99 = .c )
+  
+}
 
+ds, has(type string)
+foreach var of varlist `r(varlist)' {
+	replace `var' = upper(`var')
+}
 
-*****Further Cleaning*****
-*1. Label variables
-*2. drop unecessary variables
-*3. Rename variables in multiple select which had an extra '_'
-*4. Replace responses with other options
-*5. reorder variables in a logical way
 
 
 
@@ -385,8 +397,8 @@ label var isic_2_2 "ISIC2. Employment by industry categorisation 2 of Job 2"
 label var b9_2 "b9. Suffered job related injury in Job 2"
 label var b11_2 "b11. How job was found Job 2"
 label var b11_other_2 "b11. Other mweans job was found Job 2"
-label var b12_1 "b12_1. Business officially registered"
-label var b12_1 "b12_1. Business officially registered  [Ministry of Justice]"
+*label var b12_1 "b12_1. Business officially registered"
+*label var b12_1 "b12_1. Business officially registered  [Ministry of Justice]"
 label var b12_1_1 "b12_1. Business officially registered Job 1 [Ministry of Justice]"
 label var b12_3_1 "b12_1. Business officially registered Job 1 [The registrar of Companies]"
 label var b12_1_2 "b12_1. Business officially registered Job 2 [Ministry of Justice]"
@@ -750,6 +762,137 @@ label var c1_normal_month_10 "c1_normal. What months do you consider to be the b
 label var c1_normal_month_11 "c1_normal. What months do you consider to be the best? [November]"
 label var c1_normal_month_12 "c1_normal. What months do you consider to be the best? [December]"
 
+
+********************************************************************************
+* LABELLING MULTI RESPONSE OPTIONS - TRY AND FORMALISE AS A TEMPLATE / ADO
+********************************************************************************
+
+
+preserve
+import excel using "$qx", clear first sheet("survey")   
+keep if strpos(type, "multiple")
+gen list_name = subinstr(type, "select_multiple ", "", 1)
+rename label question_label
+
+replace question_label = subinstr(question_label, char(34), "", .)
+
+tempfile x 
+save `x'
+
+import excel using "$qx", clear first sheet("choices")
+keep list_name value label
+
+
+joinby list_name using `x' //, keep(3) nogen
+
+
+keep list_name value label name question_label
+
+replace value = subinstr(value, "-", "_", 1)
+gen variable_name = name + "_" + value
+levelsof variable_name, l(l_mulvals)
+
+di `"`l_mulvals'"'
+
+tokenize `"`l_mulvals'"'
+while "`*'" != "" {
+tempfile begin
+save `begin'
+	di "`1'"
+	keep if variable_name == "`1'"
+	local `1'_val = question_label + ". [" + upper(label) + "]" //if nathan == `1'
+	local label_length = strlen("``1'_val'")
+	di "`label_length'"
+	di "``1'_val'"
+	if `label_length' > 80 {
+	local length_diff = `label_length' - 80
+	di "LENGTH DIFFERENCE: `length_diff'"
+	local `1'_val_orig = question_label 
+	local `1'_val_orig_length = strlen("``1'_val_orig'")
+	di "ORIGINAL Q LENGTH: ``1'_val_orig_length'"
+	local length_keep = ``1'_val_orig_length' - `length_diff' - 4 
+	di "NEW Q LENGTH: `length_keep'"
+	if `length_keep' > 9 {
+	local `1'_val_orig  = substr(question_label, 1, `length_keep')
+	}
+	if `length_keep' < 10 {
+	local `1'_val_orig  = substr(question_label, 1, 10)
+	}
+	di "``1'_val_orig'"
+	local `1'_val = "``1'_val_orig'" + "... [" + upper(label) + "]" //if nathan == `1'
+	di "NEW VARIABLE LABEL: ``1'_val'"
+	}
+
+di "``1'_val'"
+macro shift
+use `begin', clear
+}
+
+restore 
+ 
+di `"`l_mulvals'"'
+
+
+tokenize `"`l_mulvals'"'
+
+
+while "`*'" != "" {
+	local n = 999
+	di "Going through: `1'"	
+	capture confirm variable `1'
+	if !_rc {
+	di "`1' EXISTS"	
+	unab vars : `1'*
+	local n `: word count `vars''
+	di "`n'"
+	
+	if `n' == 1 {
+		label var `1' "``1'_val'"	
+	}
+	if `n' > 1 {
+	local bort = ""
+	capture unab bort : `1'_*
+	di "XXXX: `bort'"
+	local k `: word count `bort''
+	di "`k'"	
+	if `k' > 0 {	
+			foreach var of varlist `1'_* {
+			di "`var'"
+			*di "``1'_val'" 
+			label var `var' "``1'_val'" 
+			}
+	}
+	}
+	}
+	else {
+	local bill = ""
+	capture unab bill : `1'_*
+	di "XXXX: `bill'"
+	local h `: word count `bort''
+	di "`h'"	
+	if `h' > 0 {	
+			foreach var of varlist `1'_* {
+			di "`var'"
+			*di "``1'_val'" 
+			label var `var' "``1'_val'" 
+			}
+	}		
+		
+		
+		
+	}
+
+	macro shift
+}
+
+
+
+
+
+
+
+
+
 ********************************************************************************
 * ORDERING VARIABLES
 ********************************************************************************
@@ -762,7 +905,6 @@ formdef_version
 ;
 #d cr
 
-ex
 save "$main_table", replace
 
 ********************************************************************************
