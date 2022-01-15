@@ -39,7 +39,7 @@ global corrections "$encrypted_path\corrections"
 *global mis "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\misc"
 global cleaning "$encrypted_path\cleaning"
 *global pii "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\PII"
-*global qx "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\01_Midline\Programming\Tekki_Fii_PV_210502.xlsx" // improve this
+global qx "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\03_Endline\Programming\Tekki_Fii_PV_Endline_WIP.xlsx" // improve this
 *global tables "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\03_Tables_Graphs\"
 *global sample_list "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\01_Midline\Programming\Sample\"
 *global incentives "$ONEDRIVE\P20204b_EUTF_GMB - Documents\04_Field Work\Incentives Number\"
@@ -89,14 +89,17 @@ cd "$dofiles"
 
 
 ******************************************
-** 1. DATA PROCESSING
+** 1. DATA PROCESSING AND PREPARATION
 ******************************************
-*do "1.0. P20204b_Youth_Decryption.do"
+do "1.0. P20204b_Youth_Decryption.do"
 cd "$dofiles"
 do "1.1. P20204b_Youth_Export.do"
 cd "$dofiles"
 do "1.2. P20204b_Youth_Clean_Data.do"
 cd "$dofiles"
+do "1.3. P20204b_Youth_Corrections_Data.do"
+cd "$dofiles"
+
 ******************************************
 * 2. FIELDWORK PROGRESS
 ******************************************
