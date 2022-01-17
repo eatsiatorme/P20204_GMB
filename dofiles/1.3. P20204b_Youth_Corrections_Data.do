@@ -35,9 +35,7 @@ foreach file of local files{
 * TEKKI FII YOUTH (MAIN)
 ********************************************************************************
 use "$corrections\/$table_name", clear
-replace a3 = 1 if ApplicantID==9101
-replace emp_inc_month_1 = 9000000 if ApplicantID==9101
-replace emp_inc_month_1 = 300 if ApplicantID==5678
+
 
 save "$corrections\/$table_name", replace
 

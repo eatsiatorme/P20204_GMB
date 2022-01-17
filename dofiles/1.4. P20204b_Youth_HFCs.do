@@ -369,7 +369,7 @@ if ${run_backcheck} {
 * MACROS
 
 local checksheet "${main_table}_CHECKS"
-
+global checking_log "$field_work_reports\checking_log" // Not sure why this has to be on again
 
 local datadir "corrections"
 
@@ -458,7 +458,7 @@ b.close_book()
 
 }
 
-void add_scto_link(string scalar filename, string scalar sheetname, string scalar variable, real scalar col, real scalar row)
+void add_scto_link(string scalar filename, string scalar sheetname, string scalar variable, real scalar col)
 {
 	class xl scalar b
 	string matrix links
@@ -475,7 +475,6 @@ void add_scto_link(string scalar filename, string scalar sheetname, string scala
 	b.set_font((3, N), col, "Calibri", 11, "5 99 193")
 	b.set_font_underline((3, N), col, "on")
 	b.set_column_width(col, col, 17)
-	b.set_border((row,N), (col,N), "thin")
 	b.close_book()
 	}
 	
@@ -590,12 +589,12 @@ cd "H:\corrections"
 	
 	global i=2
 	use $main_table, clear
-	foreach var of varlist a9 - a11 {
+	foreach var of varlist a9 a10 a11 {
 		gen `var'_otherperson = (`var'==2 | `var'==0)
 	}
 	egen check = rowtotal(*_otherperson)
 	gen error=${i} if check>0 &  a3==1 & a3!=.
-	global keepvar "a3 a9 - a11"
+	global keepvar "a3 a9 a10 a11"
 	addErr "Entered that others make Household Decisions, but no one else in Household"
 
 
@@ -657,6 +656,8 @@ cd "H:\corrections"
 
 use "$checking_log\\`checksheet'_corrections", clear
 
+
+
 foreach var of varlist _all {
 capture assert mi(`var')
 if !_rc {
@@ -664,9 +665,15 @@ drop `var'
 }
 }
 
-
+count
+if `r(N)' > 0 {
+	global add_check_sheet = 1
 export excel using  "$checking_log\/`checksheet'.xlsx", firstrow(var) replace
+}
 
+else {
+		global add_check_sheet = 0
+}
 
 
 
@@ -674,42 +681,75 @@ export excel using  "$checking_log\/`checksheet'.xlsx", firstrow(var) replace
 ********************************************************************************
 * APPENDING 
 ********************************************************************************
+
 import excel "${outfile}", sheet("6. logic") clear first case(preserve)
+count if ApplicantID != .
+if `r(N)' > 0 {
+	global add_logic_sheet = 1
 gen logic = 1
+}
 tempfile logic
 save `logic'
 
+global add_constraints_sheet = 0
 import excel "${outfile}", sheet("8. constraints") clear first case(preserve)
+count if ApplicantID != .
+if `r(N)' > 0 {
+	global add_constraints_sheet = 1
 replace variable = variable + " = " + value
 rename variable variable_1
 rename label label_1
 drop value
+}
 tempfile constraints
 save `constraints'
 
 
+
+if $add_check_sheet == 1 {
 import excel "$checking_log\/${main_table}_CHECKS.xlsx", clear first case(preserve)
 tempfile other
 save `other'
+}
 
+global add_outlier_sheet = 0
 import excel "${outfile}", sheet("11. outliers") clear first case(preserve)
+count if ApplicantID != .
+if `r(N)' > 0 {
+		global add_outlier_sheet = 1
 gen variable_1 = variable + " = " + value
 rename label label_1
 drop variable value
+}
 tempfile outliers
 save `outliers'
 
 use `logic', clear
+if $add_constraints_sheet == 1 {
 append using `constraints', gen(constraint)
-append using `other', gen(other)
+}
+if $add_check_sheet == 1 {
+append using `other', gen(other) 
+}
+if $add_outlier_sheet == 1 {
 append using `outliers', gen(outliers)
-
+}
 
 gen check_type = 1 if logic == 1
+drop logic
+if $add_constraints_sheet == 1 {
 replace check_type = 2 if constraint == 1
+drop constraint
+}
+if $add_check_sheet == 1 {
 replace check_type = 3 if other == 1 
+drop other error
+}
+if $add_outlier_sheet == 1 {
 replace check_type = 4 if outliers == 1 
-drop logic constraint other error outliers
+drop outliers
+}
+
 
 label def l_checktype 1 "Logic Check" 2 "Constraint Error" 3 "Other Quality Check" 4 "Outlier"
 label val check_type l_checktype
@@ -735,6 +775,6 @@ import excel "$hfc_output\Checking_List.xlsx", clear firstrow cellrange(A2)
 		unab allvars : _all
 		local pos : list posof "scto_link" in allvars
 		di "`pos'"
-		mata: add_scto_link("$hfc_output\Checking_List.xlsx", "Sheet1", "scto_link", `pos', 3)
+		mata: add_scto_link("$hfc_output\Checking_List.xlsx", "Sheet1", "scto_link", `pos')
 
 		mata: check_list_format("$hfc_output\Checking_List.xlsx", "Sheet1", "ApplicantID", 1, 3, `n_vars')
