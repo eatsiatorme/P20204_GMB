@@ -370,8 +370,11 @@ if ${run_backcheck} {
 
 local checksheet "${main_table}_CHECKS"
 global checking_log "$field_work_reports\checking_log" // Not sure why this has to be on again
+global error_log "$field_work_reports\checking_log" // Not sure why this has to be on again
 
 local datadir "corrections"
+
+global no_new_checks = 0
 
 ********************************************************************************
 * Take SurveyCTO Server Links
@@ -510,7 +513,10 @@ end
 	capture prog drop addErr
 	cd "$field_work_reports"
 	cap mkdir checking_log
-
+	cap mkdir error_log
+	cd "$field_work_reports\error_log"
+	cap mkdir archive
+	
 	program addErr
 	qui{
 		gen message="`1'"
@@ -583,7 +589,7 @@ cd "H:\corrections"
 * DUPLICATES
 	global i=1
 	use $main_table, clear
-	gen error=${i} if ApplicantID==9101
+	gen error=${i} if ApplicantID==100002
 	global keepvar "consent"
 	addErr "FLAGGED ID"
 	
@@ -596,6 +602,7 @@ cd "H:\corrections"
 	gen error=${i} if check>0 &  a3==1 & a3!=.
 	global keepvar "a3 a9 a10 a11"
 	addErr "Entered that others make Household Decisions, but no one else in Household"
+
 
 
 	
@@ -761,20 +768,146 @@ rename scto_link2 scto_link
 
 order submissiondate ApplicantID z1 check_type message scto_link
 
+
+global tryout "C:\Users\NathanSivewright\C4ED\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\HFC\error_log"
+*******************************************************************************
+* Check to see whether the sample has been run before
+*******************************************************************************
+
+capture confirm file "$tryout\error_log.xlsx"
+
+di _rc
+
+if _rc {
+	di "Error Log does not exist"
+	global previous_run = 0
+}
+
+if !_rc {
+	di "Error log does exist!"
+	global previous_run = 1
+}
+
+
+
+generate submissiondate_str = string(submissiondate, "%tc")
+egen error_id = concat(submissiondate_str ApplicantID  z1 check_type message)
+
+tempfile new_list
+save `new_list'
+
+di "$previous_run"
+if $previous_run == 0 {
+sort error_id
+gen error_counter = _n
+keep error_counter error_id
+tempfile error_log_data_first
+save `error_log_data_first'
+export excel "$tryout\error_log.xlsx", firstrow(var) 
+}
+
+if $previous_run == 1 {
+copy "$tryout\error_log.xlsx" "$tryout\archive\error_log_$datetime.xlsx", replace
+import excel "$tryout\error_log.xlsx", clear firstrow 
+tempfile error_log
+save `error_log'
+merge 1:1 error_id using `new_list'
+*
+su error_counter
+local error_counter_upto = `r(max)'
+di "`error_counter_upto'"
+keep if _merge == 2
+
+count 
+if `r(N)' > 0 {
+*
+sort error_counter error_id
+replace error_counter = _n + `error_counter_upto'
+keep error_counter error_id
+tempfile error_log_data_new
+save `error_log_data_new'
+append using `error_log'
+export excel "$tryout\error_log.xlsx", firstrow(var) replace
+}
+else {
+	global no_new_checks = 1
+}
+}
+
+if $no_new_checks == 1 {
+	di "No new checks to show"
+}
+else {
+
+
+use `new_list', clear
+count 
+if `r(N)' > 0 {
+	if $previous_run == 0 {
+merge 1:1 error_id using `error_log_data_first', keep(3) keepusing(error_counter)
+	}
+
+	if $previous_run == 1 {
+merge 1:1 error_id using `error_log_data_new', keep(3) keepusing(error_counter)
+	}
+sort error_counter
+drop error_id _merge submissiondate_str
+}
+
+order error_counter submissiondate ApplicantID z1 check_type message scto_link
 des, short
 local n_vars `r(k)'
 
-export excel "$hfc_output\Checking_List.xlsx", firstrow(var) sheet("Sheet1", modify) keepcellfmt cell(A2)
+if $previous_run == 0 {
+local error_counter_upto = 0
+}
+
+local startfrom = `error_counter_upto' + 3
+export excel "$hfc_output\Checking_List.xlsx", sheet("Sheet1", modify) keepcellfmt cell(B`startfrom')
 
 
-import excel "$hfc_output\Checking_List.xlsx", clear firstrow cellrange(A2)
+import excel "$hfc_output\Checking_List.xlsx", clear firstrow cellrange(B2)
 
 *merge 1:1 $id error using "$checking_log\\`checksheet'_corrections", keep(3) nogen keepusing(scto_link)
 	*sort message
 	*sort error $id
 		unab allvars : _all
 		local pos : list posof "scto_link" in allvars
+		local pos = `pos' + 2 // Because of status column
 		di "`pos'"
 		mata: add_scto_link("$hfc_output\Checking_List.xlsx", "Sheet1", "scto_link", `pos')
 
 		mata: check_list_format("$hfc_output\Checking_List.xlsx", "Sheet1", "ApplicantID", 1, 3, `n_vars')
+		
+}
+
+
+
+
+*********
+
+import excel "$tryout\error_log.xlsx", clear firstrow 
+merge 1:1 error_id using `new_list', keep(3) keepusing(error_id) nogen
+tempfile bleh
+save `bleh' 
+
+import excel "$hfc_output\Checking_List.xlsx", clear firstrow cellrange(B2)
+
+merge 1:1 error_counter using `bleh', gen(still_error)
+
+gen status = 0
+replace status = 1 if still_error==3 & Action!="Ignore"
+replace status = 2 if still_error==1
+replace status = 3 if Action=="Ignore" & status != 2
+
+
+
+drop still_error
+
+label def l_status 1 "Error still remains" 2 "Error No Longer Remains" 3 "Error Ignored"
+label val status l_status
+
+keep status
+export excel "$hfc_output\Checking_List.xlsx", sheet("Sheet1", modify) keepcellfmt cell(A3)
+ex
+ 
