@@ -40,7 +40,7 @@ foreach file of local files{
 ********************************************************************************
 * TEKKI FII YOUTH (MAIN)
 ********************************************************************************
-use "$main_table", clear
+use "$cleaning\/$table_name", clear
 
 
 **************************************************
@@ -905,7 +905,7 @@ formdef_version
 ;
 #d cr
 
-save "$main_table", replace
+save "$cleaning\/$table_name", replace
 
 ********************************************************************************
 * EXIT CODE

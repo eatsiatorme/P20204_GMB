@@ -26,17 +26,6 @@ foreach file in `files'{
 }
 
 ***************************
-**  erase files in corrections **
-***************************
-local deletepathclean = "$corrections\/"
-local files : dir "`deletepathclean'" file "*.dta", respectcase	
-foreach file in `files'{	
-	local fileandpathtodelete = "`deletepathclean'"+"`file'"
-	capture erase "`fileandpathtodelete'"
-}
-
-
-***************************
 **  erase files in cleaning **
 ***************************
 local deletepathclean = "$cleaning\/"
@@ -46,7 +35,17 @@ foreach file in `files'{
 	capture erase "`fileandpathtodelete'"
 }
 
+***************************
+**  erase files in corrections **
+***************************
+local deletepathcorr = "$corrections\/"
+local files : dir "`deletepathcorr'" file "*.dta", respectcase	
+foreach file in `files'{	
+	local fileandpathtodelete = "`deletepathcorr'"+"`file'"
+	di "`fileandpathtodelete'"
+	capture erase "`fileandpathtodelete'"
 
+}
 
 ***************************
 **  Import Data **

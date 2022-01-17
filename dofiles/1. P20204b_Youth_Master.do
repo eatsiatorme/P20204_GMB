@@ -32,6 +32,9 @@ global encrypted_drive "H"
 global encrypted_path "$encrypted_drive:"
 *global scto_download "H:\scto\P20204b_GMB_Local\Endline\C1\Youth"
 global project_folder "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\"
+global hfc_path "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\HFC\"
+global hfc_output "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\HFC\"
+
 
 *global surveycto "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\SurveyCTO Sync\"
 global exported "$encrypted_path\exported"
@@ -49,8 +52,19 @@ global qx "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\03_Endline\P
 *global errorfile "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\C1\Youth\error datasets"
 *global id
 *global checking_log "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\C1\Youth\checking_log/"
-global main_table "Tekki_Fii_PV_3"
+global table_name "Tekki_Fii_PV_3"
 *local checksheet "${main_table}_CHECKS"
+
+global main_table "Tekki_Fii_PV_3_checked"
+
+global errorfile "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\HFC\test"
+global checking_log "$field_work_reports\checking_log"
+global field_work_reports "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\HFC\"
+local checksheet "${main_table}_CHECKS"
+*global corrections "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\corrections"
+global id ApplicantID
+global scto_server "mannheimc4ed"
+
 
 
 global key_outcome "wrk_cntr num_empl spe_score brs_score current_inc sum_inc_reference current_bus employed_stable_ever employed_ilo" // Key outcome variables - add to from clean dataset
@@ -99,7 +113,8 @@ do "1.2. P20204b_Youth_Clean_Data.do"
 cd "$dofiles"
 do "1.3. P20204b_Youth_Corrections_Data.do"
 cd "$dofiles"
-
+do "1.4. P20204b_Youth_HFCs.do"
+cd "$dofiles"
 ******************************************
 * 2. FIELDWORK PROGRESS
 ******************************************
