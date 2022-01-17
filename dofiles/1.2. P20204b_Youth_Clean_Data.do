@@ -76,7 +76,7 @@ profit_month_?
 duration 
 total_month_inc 
 ave_month_inc 
-treatment_group 
+treatment 
 sum_b3 
 sum_current_bus 
 b20* 
@@ -109,6 +109,9 @@ gen completed_interview=(a6!=.) // CHANGE THIS TO A PROPER COMPLETION VARIABLE
 bysort ApplicantID: egen completed_any=max(completed_interview)
 
 duplicates tag ApplicantID, gen(dup) // Tag multiple submissions
+count if dup > 0
+
+if `r(N)' > 0 {
 gsort ApplicantID completed_interview -submissiondate 
 by ApplicantID: gen counter=_n
 by ApplicantID: gen attempt_tot=_N
@@ -127,8 +130,12 @@ merge m:1 ApplicantID using `attempts_before', nogen // Merge in wide table for 
 
 egen form_count=rownonmiss(submissiondate?)
 replace form_count=form_count+1
+drop counter
+}
+else {
+	gen form_count = 1
 
-
+}
 **************************************************
 * PRELIMINARY ANALYSIS
 **************************************************
@@ -296,9 +303,9 @@ label var ApplicantID "Unique ApplicantID"
 
 label var full_name "Name of Respondent (Pre-populated)"
 
-label var treatment_group "Treatment group of Respondent (Pre-populated)"
-label def L_Treat 1 "Treatment" 0 "Control"
-label val treatment_group L_Treat
+label var treatment "Treatment group of Respondent (Pre-populated)"
+label def L_Treat 2 "Treatment (TVET + BD)" 1 "Treatment (TVET)" 0 "Control"
+label val treatment L_Treat
 
 label var consent "Respondent Consent"
 
@@ -900,7 +907,7 @@ while "`*'" != "" {
 order 
 ApplicantID
 full_name
-treatment_group
+treatment
 formdef_version
 ;
 #d cr
