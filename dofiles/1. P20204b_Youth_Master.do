@@ -67,6 +67,23 @@ global scto_server "mannheimc4ed"
 
 
 
+*** Back-check sample
+// Data Of Interest
+global id "ApplicantID" // Unique ID
+global name "full_name" // Full name of participant
+global completed "consent" // Whether midline was completed
+global treatment "treatment"
+global phone "final_phone" // Stub of phone numbers variable
+global social_media "whatsapp telegram signal" // all social media variables
+global email "email"
+global sub_date "submissiondate"
+*global today "06may2021"
+
+
+
+
+
+
 global key_outcome "wrk_cntr num_empl spe_score brs_score current_inc sum_inc_reference current_bus employed_stable_ever employed_ilo" // Key outcome variables - add to from clean dataset
 global key_outcome_outlier "ave_month_inc emp_inc_month_? emp_inkind_month_? profit_month_? c2 c4" // Key outcome variables - add to from clean dataset
 global enumerator_check_vars "b2 tekkifii_check tekkifii_check_ind j1a j1b"
@@ -103,7 +120,7 @@ cd "$dofiles"
 
 
 ******************************************
-** 1. DATA PROCESSING AND PREPARATION
+** 1. DATA PROCESSING AND PREPARATION (CLEANING AND CORRECTIONS)
 ******************************************
 *do "1.0. P20204b_Youth_Decryption.do"
 cd "$dofiles"
@@ -113,7 +130,12 @@ do "1.2. P20204b_Youth_Clean_Data.do"
 cd "$dofiles"
 do "1.3. P20204b_Youth_Corrections_Data.do"
 cd "$dofiles"
+******************************************
+* 2. DATA QUALITY CHECKS
+******************************************
 do "1.4. P20204b_Youth_HFCs.do"
+cd "$dofiles"
+do "2.2 20204b_Youth_BC_Sample.do"
 cd "$dofiles"
 ******************************************
 * 2. FIELDWORK PROGRESS
