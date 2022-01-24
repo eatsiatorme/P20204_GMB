@@ -579,7 +579,7 @@ end
 	 	noisily{ //delete if you want to see less output
 		
 
-
+/*
 cd "H:\corrections"
 
 	
@@ -630,9 +630,12 @@ cd "H:\corrections"
 
 		
 		
+	*/
 	
-	
-		
+
+cd "$dofiles"	
+include "1.45. P20204b_Youth_HFC_Stata.do"	
+
 		**************************	
 		**CREATE CHECKING SHEETS**
 		**************************	
