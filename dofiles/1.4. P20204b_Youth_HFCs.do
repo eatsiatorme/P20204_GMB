@@ -863,10 +863,10 @@ local error_counter_upto = 0
 }
 
 local startfrom = `error_counter_upto' + 3
-export excel "$hfc_output\Checking_List.xlsx", sheet("Sheet1", modify) keepcellfmt cell(B`startfrom')
+export excel "$hfc_output\Checking_List.xlsx", sheet("Sheet1", modify) keepcellfmt cell(C`startfrom')
 
 
-import excel "$hfc_output\Checking_List.xlsx", clear firstrow cellrange(B2)
+import excel "$hfc_output\Checking_List.xlsx", clear firstrow cellrange(C2)
 
 *merge 1:1 $id error using "$checking_log\\`checksheet'_corrections", keep(3) nogen keepusing(scto_link)
 	*sort message
@@ -896,6 +896,15 @@ import excel "$hfc_output\Checking_List.xlsx", clear firstrow cellrange(B2)
 merge 1:1 error_counter using `bleh', gen(still_error)
 
 gen status = 0
+
+capture confirm string variable Action
+			if _rc == 0 {
+			}
+			else {
+			tostring Action, replace
+
+			}
+
 replace status = 1 if still_error==3 & Action!="Ignore"
 replace status = 2 if still_error==1
 replace status = 3 if Action=="Ignore" & status != 2
@@ -909,5 +918,57 @@ label val status l_status
 
 keep status
 export excel "$hfc_output\Checking_List.xlsx", sheet("Sheet1", modify) keepcellfmt cell(A3)
+
+
+*******************************************************************************************************************************
+import excel "C:\Users\NathanSivewright\C4ED\P20204b_EUTF_GMB - Documents\04_Field Work\Share with CepRass\Checking_List_CepRass.xlsx", clear firstrow cellrange(B2)
+*keep field_counter error_counter
+su field_counter
+local field_check = `r(N)'
+if `field_check'>0 {
+	local field_check_count = `r(max)'
+	tempfile already_in_field
+	save `already_in_field'
+}
+
+
+
+import excel "$hfc_output\Checking_List.xlsx", clear firstrow cellrange(A2)
+
+capture confirm string variable Action
+			if _rc == 0 {
+			}
+			else {
+			tostring Action, replace
+
+			}
+
+keep if Action=="Field Clarification"
+drop Action status
+
+if `field_check'==0 {
+gen field_counter = _n	
+}
+
+if `field_check'>0 {
+merge 1:1 error_counter using `already_in_field', keep(1) nogen keepusing(field_counter)
+sort error_counter
+replace field_counter = _n + `field_check_count'
+merge 1:1 error_counter using `already_in_field', keep(1 2) nogen force // remove force later
+}
+sort field_counter
+order field_counter, after(error_counter)
+
+count 
+if `r(N)' > 0 {
+
+export excel "C:\Users\NathanSivewright\C4ED\P20204b_EUTF_GMB - Documents\04_Field Work\Share with CepRass\Checking_List_CepRass.xlsx", sheet("Sheet1", modify) keepcellfmt cell(B3)
+}
+ex
+import excel "$hfc_output\Checking_List.xlsx", clear firstrow cellrange(B2)
+
+keep if Action=="Field Clarification"
+drop Action
+export excel "C:\Users\NathanSivewright\C4ED\P20204b_EUTF_GMB - Documents\04_Field Work\Share with CepRass\Checking_List_CepRass.xlsx", sheet("Sheet1", modify) keepcellfmt cell(A3)
 ex
  
