@@ -12,6 +12,15 @@ quietly {
 
 clear all
 
+
+
+
+
+*ssc install tabcount
+
+
+
+
 *capture veracrypt, dismount drive(H)
 
 // General Globals
@@ -34,7 +43,7 @@ global encrypted_path "$encrypted_drive:"
 global project_folder "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\"
 global hfc_path "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\HFC\"
 global hfc_output "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\HFC\05_output"
-
+global ceprass_folder "$ONEDRIVE\P20204b_EUTF_GMB - Documents\04_Field Work\Share with CepRass\"
 
 *global surveycto "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\SurveyCTO Sync\"
 global exported "$encrypted_path\exported"
@@ -44,7 +53,7 @@ global cleaning "$encrypted_path\cleaning"
 *global pii "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\04_Raw_Data\/$round\/$cycle\/$tool\PII"
 global qx "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\03_Endline\Programming\Tekki_Fii_PV_Endline_WIP.xlsx" // improve this
 *global tables "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\03_Tables_Graphs\"
-*global sample_list "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\01_Midline\Programming\Sample\"
+global sample_list "C:\Users\NathanSivewright\C4ED\P20204b_EUTF_GMB - Documents\03_Questionnaires\03_Endline\Programming\" // UPDATE ONCE WE HAVE A PROPER PLACE FOR THE SAMPLE
 *global incentives "$ONEDRIVE\P20204b_EUTF_GMB - Documents\04_Field Work\Incentives Number\"
 *global field_work_reports "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\/$round\/$cycle\/$tool\"
 *global scto_server "mannheimc4ed"
@@ -135,13 +144,13 @@ cd "$dofiles"
 ******************************************
 do "1.4. P20204b_Youth_HFCs.do"
 cd "$dofiles"
-do "2.2 20204b_Youth_BC_Sample.do"
+*do "2.2 20204b_Youth_BC_Sample.do"
+*cd "$dofiles"
+******************************************
+* 3. FIELDWORK PROGRESS
+******************************************
+do "3.1. P20204b_Youth_Progress.do"
 cd "$dofiles"
-******************************************
-* 2. FIELDWORK PROGRESS
-******************************************
-
-
 ******************************************
 ** 3. DATA CHECKS
 ******************************************

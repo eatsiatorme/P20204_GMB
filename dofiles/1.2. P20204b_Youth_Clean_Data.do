@@ -412,8 +412,8 @@ label var b12_1_2 "b12_1. Business officially registered Job 2 [Ministry of Just
 label var b12_3_2 "b12_1. Business officially registered Job 1 [The Registrar of Companies]"
 label var b12__96_1 "b12. Business officially registered Job 1 [Other specify]"
 label var b12__96_2 "b12. Business officially registered Job 2 [Other specify]"
-label var b12__95_2 "b12. Business officially registered Job 2 [None of the above]"
-label var b12__95_1 "b12. Business officially registered Job 1 [None of the above]"
+*label var b12__95_2 "b12. Business officially registered Job 2 [None of the above]"
+*label var b12__95_1 "b12. Business officially registered Job 1 [None of the above]"
 label var b12__99_2 "b12. Business officially registered Job 2 [Don't know]"
 label var b12__99_1 "b12. Business officially registered Job 1 [Don't know]"
 label var b12_3_1 "b12. Business officially registered Job 2 [The Registrar of Companies]"
@@ -896,8 +896,18 @@ while "`*'" != "" {
 
 
 
+gen status = 1 if completed=="YES"
+replace status = 2 if partially_completed_1=="YES"
+replace status = 3 if partially_completed_2=="YES"
+replace status = 4 if refused_status=="YES"
+replace status = 5 if untracked=="YES"
 
+label def L_status_final 1 "Completed" 2 "Partially Completed - Started" 3 "Partially Completed - Not Started" 4 "Refused" 5 "Untracked"
+label val status L_status_final
 
+gen complete = (status==1)
+
+gen duration_m = duration / 60
 
 
 ********************************************************************************
@@ -909,6 +919,7 @@ ApplicantID
 full_name
 treatment
 formdef_version
+status
 ;
 #d cr
 
