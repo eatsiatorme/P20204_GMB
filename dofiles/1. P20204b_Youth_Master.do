@@ -12,6 +12,15 @@ quietly {
 
 clear all
 
+
+
+
+
+*ssc install tabcount
+
+
+
+
 *capture veracrypt, dismount drive(H)
 
 // General Globals
@@ -135,8 +144,8 @@ cd "$dofiles"
 ******************************************
 do "1.4. P20204b_Youth_HFCs.do"
 cd "$dofiles"
-do "2.2 20204b_Youth_BC_Sample.do"
-cd "$dofiles"
+*do "2.2 20204b_Youth_BC_Sample.do"
+*cd "$dofiles"
 ******************************************
 * 3. FIELDWORK PROGRESS
 ******************************************
