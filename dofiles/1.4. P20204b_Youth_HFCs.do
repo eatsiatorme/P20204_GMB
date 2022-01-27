@@ -772,7 +772,7 @@ rename scto_link2 scto_link
 order submissiondate ApplicantID z1 check_type message scto_link
 
 
-global tryout "C:\Users\NathanSivewright\C4ED\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\HFC\error_log"
+global tryout "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\HFC\error_log"
 *******************************************************************************
 * Check to see whether the sample has been run before
 *******************************************************************************
@@ -924,7 +924,7 @@ export excel "$hfc_output\Checking_List.xlsx", sheet("Sheet1", modify) keepcellf
 
 
 *******************************************************************************************************************************
-import excel "C:\Users\NathanSivewright\C4ED\P20204b_EUTF_GMB - Documents\04_Field Work\Share with CepRass\Checking_List_CepRass.xlsx", clear firstrow cellrange(B2)
+import excel "$ONEDRIVE\P20204b_EUTF_GMB - Documents\04_Field Work\Share with CepRass\Checking_List_CepRass.xlsx", clear firstrow cellrange(B2)
 *keep field_counter error_counter
 su field_counter
 local field_check = `r(N)'
@@ -965,13 +965,13 @@ order field_counter, after(error_counter)
 count 
 if `r(N)' > 0 {
 
-export excel "C:\Users\NathanSivewright\C4ED\P20204b_EUTF_GMB - Documents\04_Field Work\Share with CepRass\Checking_List_CepRass.xlsx", sheet("Sheet1", modify) keepcellfmt cell(B3)
+export excel "$ONEDRIVE\P20204b_EUTF_GMB - Documents\04_Field Work\Share with CepRass\Checking_List_CepRass.xlsx", sheet("Sheet1", modify) keepcellfmt cell(B3)
 }
 ex
 import excel "$hfc_output\Checking_List.xlsx", clear firstrow cellrange(B2)
 
 keep if Action=="Field Clarification"
 drop Action
-export excel "C:\Users\NathanSivewright\C4ED\P20204b_EUTF_GMB - Documents\04_Field Work\Share with CepRass\Checking_List_CepRass.xlsx", sheet("Sheet1", modify) keepcellfmt cell(A3)
+export excel "$ONEDRIVE\P20204b_EUTF_GMB - Documents\04_Field Work\Share with CepRass\Checking_List_CepRass.xlsx", sheet("Sheet1", modify) keepcellfmt cell(A3)
 ex
  

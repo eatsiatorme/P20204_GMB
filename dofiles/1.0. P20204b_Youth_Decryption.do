@@ -2,15 +2,15 @@
 n: di "${proj}_${round}_Decryption.do Started"
 
 /*
-*** Tekki Fii Midline
-*  Elikplim Atsiatorme December 2021
+*** Tekki Fii Endline
+* January 2022
 
 This do-file decrypts the veracrypt container holding PII data. 
 
 */
 
 ****************************************
-******Veracrypt Password: *****
+******Veracrypt (P20204b Field Data) *****
 ****************************************
 capture veracrypt, dismount drive(H)
 cd "$project_folder"
