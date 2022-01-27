@@ -24,7 +24,15 @@ from("https://raw.githubusercontent.com/c4ed-mannheim/commentsmerge/main")
 
 net install ipacheck, from("https://raw.githubusercontent.com/PovertyAction/high-frequency-checks/master/ado") replace 
 
+ssc install cfout
+ssc install bcstats
+ssc install readreplace
+
+ssc install fre
+
 */
+
+
 // General Globals
 global ONEDRIVE "C:\Users\/`c(username)'\C4ED\"
 global version = 1
