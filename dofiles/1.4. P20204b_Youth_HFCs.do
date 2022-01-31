@@ -461,7 +461,7 @@ b.close_book()
 
 }
 
-void add_scto_link(string scalar filename, string scalar sheetname, string scalar variable, real scalar col)
+void add_scto_link(string scalar filename, string scalar sheetname, string scalar variable, real scalar col, real scalar rowbeg, real scalar rowend)
 {
 	class xl scalar b
 	string matrix links
@@ -474,14 +474,14 @@ void add_scto_link(string scalar filename, string scalar sheetname, string scala
 	b.load_book(filename)
 	b.set_sheet(sheetname)
 	b.set_mode("open")
-	b.put_formula(3, col, links)
-	b.set_font((3, N), col, "Calibri", 11, "5 99 193")
-	b.set_font_underline((3, N), col, "on")
+	b.put_formula(rowbeg, col, links)
+	b.set_font((rowbeg, rowend), col, "Calibri", 11, "5 99 193")
+	b.set_font_underline((rowbeg, rowend), col, "on")
 	b.set_column_width(col, col, 17)
 	b.close_book()
 	}
 	
-void check_list_format(string scalar filename, string scalar sheetname, string scalar variable, real scalar col, real scalar row, real scalar nvar)
+void check_list_format(string scalar filename, string scalar sheetname, string scalar variable, real scalar col, real scalar rowbeg, real scalar rowend, real scalar nvar)
 {
 	class xl scalar b
 	string matrix links
@@ -495,7 +495,7 @@ void check_list_format(string scalar filename, string scalar sheetname, string s
 	b.load_book(filename)
 	b.set_sheet(sheetname)
 	b.set_mode("open")
-	b.set_border((row,Nrow), (col,nvar), "thin")
+	b.set_border((rowbeg,rowend), (col,nvar), "thin")
 	b.close_book()
 	}
 
@@ -522,7 +522,7 @@ end
 		gen message="`1'"
 		di "`errorfile'"
 		keep if error!=.
-		keep submissiondate $id error message $keepvar z1
+		keep submissiondate $id error message $keepvar z2 z1
 		global keepvar_counter = 1
 		foreach var of varlist $keepvar {
 			capture confirm string variable `var'
@@ -570,6 +570,7 @@ end
 		clear	
 		tempfile `checksheet'
 		gen float error=.
+		gen float z2=.
 		gen float z1=.
 		gen str244 message=""
 		format message %-244s
@@ -580,55 +581,8 @@ end
 		
 
 /*
-cd "H:\corrections"
-
-	
-******************************
-**BASIC CHECKS**
-******************************
-* DUPLICATES
-	global i=1
-	use $main_table, clear
-	gen error=${i} if ApplicantID==100002
-	global keepvar "consent"
-	addErr "FLAGGED ID"
-	
-	global i=2
-	use $main_table, clear
-	foreach var of varlist a9 a10 a11 {
-		gen `var'_otherperson = (`var'==2 | `var'==0)
-	}
-	egen check = rowtotal(*_otherperson)
-	gen error=${i} if check>0 &  a3==1 & a3!=.
-	global keepvar "a3 a9 a10 a11"
-	addErr "Entered that others make Household Decisions, but no one else in Household"
 
 
-
-	
-	/*
-		global i=
-	use $main_table, clear
-	gen error=${i} if
-	addErr ""
-	*/
-*****************************************************************************************************************	
-*	Checks to add
-*****************************************************************************************************************	
-	
-
-	
-	
-	
-	
-	
-	
-	
-		*****************************************************************************************************************
-		********************************************* END ERRORS ********************************************************
-		*****************************************************************************************************************
-
-		
 		
 	*/
 	
@@ -765,19 +719,20 @@ label def l_checktype 1 "Logic Check" 2 "Constraint Error" 3 "Other Quality Chec
 label val check_type l_checktype
 
 
-merge m:1 ApplicantID using `scto_link_var', nogen keep(3)
-drop scto_link
-rename scto_link2 scto_link
+*merge m:1 ApplicantID using `scto_link_var', nogen keep(3)
+*drop scto_link
+*rename scto_link2 scto_link
 
-order submissiondate ApplicantID z1 check_type message scto_link
+*order submissiondate ApplicantID z2 z1 check_type message scto_link
 
 
 global tryout "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\HFC\error_log"
+
 *******************************************************************************
 * Check to see whether the sample has been run before
 *******************************************************************************
 
-capture confirm file "$tryout\error_log.xlsx"
+capture confirm file "$tryout\error_log.xlsx" // Confirms that there is already an error log
 
 di _rc
 
@@ -791,16 +746,28 @@ if !_rc {
 	global previous_run = 1
 }
 
-
+*******************************************************************************
+* Create 'New list' - i.e. new errors that are flagged
+*******************************************************************************
 
 generate submissiondate_str = string(submissiondate, "%tc")
-egen error_id = concat(submissiondate_str ApplicantID  z1 check_type message)
+egen error_id = concat(submissiondate_str ApplicantID z1 check_type message)
+
+
+drop z1 z2
+merge m:1 ApplicantID using "$corrections\/$table_name", nogen keep(3) keepusing(z1 z2) // getting labels for supervisor and enumerator
+*label val z1 z1
+decode z1, gen(enumerator)
+*label val z2 z2
+decode z2, gen(supervisor)
+drop z1 z2
+*/
 
 tempfile new_list
-save `new_list'
+save `new_list' // List of newly added errors
 
 di "$previous_run"
-if $previous_run == 0 {
+if $previous_run == 0 { // If this is the first time - then create the error log
 sort error_id
 gen error_counter = _n
 keep error_counter error_id
@@ -809,20 +776,19 @@ save `error_log_data_first'
 export excel "$tryout\error_log.xlsx", firstrow(var) 
 }
 
-if $previous_run == 1 {
+if $previous_run == 1 { // If this is not the first time make a copy of previous log and filter out any old cases
 copy "$tryout\error_log.xlsx" "$tryout\archive\error_log_$datetime.xlsx", replace
 import excel "$tryout\error_log.xlsx", clear firstrow 
 tempfile error_log
 save `error_log'
 merge 1:1 error_id using `new_list'
-*
 su error_counter
-local error_counter_upto = `r(max)'
+local error_counter_upto = `r(max)' // Take total number of errors in log
 di "`error_counter_upto'"
-keep if _merge == 2
+keep if _merge == 2 // Keep only new error cases
 
 count 
-if `r(N)' > 0 {
+if `r(N)' > 0 { // If there are indeed new error cases - create new version of the error log
 *
 sort error_counter error_id
 replace error_counter = _n + `error_counter_upto'
@@ -837,64 +803,76 @@ else {
 }
 }
 
-if $no_new_checks == 1 {
+if $no_new_checks == 1 { // If there are no new error cases
 	di "No new checks to show"
 }
-else {
+else { // If there are indeed new error cases 
 
 
-use `new_list', clear
+use `new_list', clear // Use new error cases
 count 
-if `r(N)' > 0 {
-	if $previous_run == 0 {
+if `r(N)' > 0 { 
+	if $previous_run == 0 { // If new error cases AND this is the first time running then merge with the cases in the log
 merge 1:1 error_id using `error_log_data_first', keep(3) keepusing(error_counter)
 	}
 
-	if $previous_run == 1 {
+	if $previous_run == 1 { // If new error cases AND there are previous errors then merge with error log but only keep new ones
 merge 1:1 error_id using `error_log_data_new', keep(3) keepusing(error_counter)
+
 	}
 sort error_counter
 drop error_id _merge submissiondate_str
 }
 
-order error_counter submissiondate ApplicantID z1 check_type message scto_link
+
+merge m:1 ApplicantID using `scto_link_var', nogen keep(3)
+drop scto_link
+rename scto_link2 scto_link
+
+sort error_counter
+order error_counter submissiondate ApplicantID supervisor enumerator check_type message scto_link
 des, short
-local n_vars `r(k)'
+local n_vars `r(k)' // count number of variables
 
 if $previous_run == 0 {
 local error_counter_upto = 0
 }
 
+
+
 local startfrom = `error_counter_upto' + 3
 export excel "$hfc_output\Checking_List.xlsx", sheet("Sheet1", modify) keepcellfmt cell(C`startfrom')
 
 
-import excel "$hfc_output\Checking_List.xlsx", clear firstrow cellrange(C2)
+*******************************************************************************
+* Mata Formatting Checking List
+*******************************************************************************
 
-*merge 1:1 $id error using "$checking_log\\`checksheet'_corrections", keep(3) nogen keepusing(scto_link)
-	*sort message
-	*sort error $id
 		unab allvars : _all
 		local pos : list posof "scto_link" in allvars
 		local pos = `pos' + 2 // Because of status column
 		di "`pos'"
-		mata: add_scto_link("$hfc_output\Checking_List.xlsx", "Sheet1", "scto_link", `pos')
+		su error_counter
+		local rowbeg = `r(min)' + 2
+		local rowend = `r(max)' + 2
+		mata: add_scto_link("$hfc_output\Checking_List.xlsx", "Sheet1", "scto_link", `pos', `rowbeg', `rowend')
 
-		mata: check_list_format("$hfc_output\Checking_List.xlsx", "Sheet1", "ApplicantID", 1, 3, `n_vars')
-		
+		mata: check_list_format("$hfc_output\Checking_List.xlsx", "Sheet1", "ApplicantID", 1, `rowbeg', `rowend', `n_vars')	
 }
 
 
 
 
-*********
+*******************************************************************************
+* Creating Status column
+*******************************************************************************
 
-import excel "$tryout\error_log.xlsx", clear firstrow 
-merge 1:1 error_id using `new_list', keep(3) keepusing(error_id) nogen
+import excel "$tryout\error_log.xlsx", clear firstrow // Open errors
+merge 1:1 error_id using `new_list', keep(3) keepusing(error_id) nogen // Keep only 'new errors'
 tempfile bleh
 save `bleh' 
 
-import excel "$hfc_output\Checking_List.xlsx", clear firstrow cellrange(B2)
+import excel "$hfc_output\Checking_List.xlsx", clear firstrow cellrange(B2) // Open up errors
 
 merge 1:1 error_counter using `bleh', gen(still_error)
 
@@ -912,8 +890,6 @@ replace status = 1 if still_error==3 & Action!="Ignore"
 replace status = 2 if still_error==1
 replace status = 3 if Action=="Ignore" & status != 2
 
-
-
 drop still_error
 
 label def l_status 1 "Error still remains" 2 "Error No Longer Remains" 3 "Error Ignored"
@@ -922,10 +898,12 @@ label val status l_status
 keep status
 export excel "$hfc_output\Checking_List.xlsx", sheet("Sheet1", modify) keepcellfmt cell(A3)
 
-
-*******************************************************************************************************************************
+********************************************************************************
+* CREATING LOCAL PARTNER CHECKING SHEET
+********************************************************************************
 import excel "$ONEDRIVE\P20204b_EUTF_GMB - Documents\04_Field Work\Share with CepRass\Checking_List_CepRass.xlsx", clear firstrow cellrange(B2)
 *keep field_counter error_counter
+drop scto_link
 su field_counter
 local field_check = `r(N)'
 if `field_check'>0 {
@@ -937,6 +915,10 @@ if `field_check'>0 {
 
 
 import excel "$hfc_output\Checking_List.xlsx", clear firstrow cellrange(A2)
+merge m:1 ApplicantID using `scto_link_var', nogen keep(3)
+drop scto_link
+rename scto_link2 scto_link
+order scto_link, after(message)
 
 capture confirm string variable Action
 			if _rc == 0 {
@@ -958,20 +940,35 @@ merge 1:1 error_counter using `already_in_field', keep(1) nogen keepusing(field_
 sort error_counter
 replace field_counter = _n + `field_check_count'
 merge 1:1 error_counter using `already_in_field', keep(1 2) nogen force // remove force later
+
 }
 sort field_counter
 order field_counter, after(error_counter)
 
 count 
 if `r(N)' > 0 {
-
 export excel "$ONEDRIVE\P20204b_EUTF_GMB - Documents\04_Field Work\Share with CepRass\Checking_List_CepRass.xlsx", sheet("Sheet1", modify) keepcellfmt cell(B3)
-}
-ex
-import excel "$hfc_output\Checking_List.xlsx", clear firstrow cellrange(B2)
 
-keep if Action=="Field Clarification"
-drop Action
-export excel "$ONEDRIVE\P20204b_EUTF_GMB - Documents\04_Field Work\Share with CepRass\Checking_List_CepRass.xlsx", sheet("Sheet1", modify) keepcellfmt cell(A3)
+
+*******************************************************************************
+* Mata Formatting Checking List
+*******************************************************************************
+des, short
+local n_vars `r(k)' // count number of variables
+
+		unab allvars : _all
+		local pos : list posof "scto_link" in allvars
+		local pos = `pos' + 1 // Because of status column
+		di "`pos'"
+		su field_counter
+		local rowbeg = `r(min)' + 2
+		local rowend = `r(max)' + 2
+		mata: add_scto_link("$ONEDRIVE\P20204b_EUTF_GMB - Documents\04_Field Work\Share with CepRass\Checking_List_CepRass.xlsx", "Sheet1", "scto_link", `pos', `rowbeg', `rowend')
+
+		mata: check_list_format("$ONEDRIVE\P20204b_EUTF_GMB - Documents\04_Field Work\Share with CepRass\Checking_List_CepRass.xlsx", "Sheet1", "ApplicantID", 1, `rowbeg', `rowend', `n_vars')	
+
+}
+
 ex
- 
+
+

@@ -28,7 +28,54 @@ cd "H:\corrections"
 	gen error=${i} if ApplicantID==100003
 	global keepvar "consent"
 	addErr "FLAGGED ID"
-
+	
+		global i=4
+	use $main_table, clear
+	gen error=${i} if ApplicantID==100003
+	global keepvar "consent"
+	addErr "FLAGGED ID - 2"
+	
+			global i=5
+	use $main_table, clear
+	gen error=${i} if ApplicantID==100003
+	global keepvar "consent"
+	addErr "FLAGGED ID - 3"
+	
+				global i=6
+	use $main_table, clear
+	gen error=${i} if ApplicantID==100003
+	global keepvar "consent"
+	addErr "FLAGGED ID - 4"
+	
+					global i=7
+	use $main_table, clear
+	gen error=${i} if ApplicantID==100003
+	global keepvar "consent"
+	addErr "FLAGGED ID - 5"
+					
+					global i=8
+	use $main_table, clear
+	gen error=${i} if ApplicantID==100003
+	global keepvar "consent"
+	addErr "FLAGGED ID - 6"
+	
+						global i=9
+	use $main_table, clear
+	gen error=${i} if ApplicantID==100003
+	global keepvar "consent"
+	addErr "FLAGGED ID - 7"
+	
+							global i=10
+	use $main_table, clear
+	gen error=${i} if ApplicantID==100003
+	global keepvar "consent"
+	addErr "FLAGGED ID - 8"
+	
+					global i=11
+	use $main_table, clear
+	gen error=${i} if ApplicantID==100003
+	global keepvar "consent"
+	addErr "FLAGGED ID - 9"
 	
 	/*
 		global i=
