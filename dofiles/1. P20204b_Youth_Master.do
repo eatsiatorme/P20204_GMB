@@ -128,7 +128,7 @@ cd "$dofiles"
 ******************************************
 ** 1. DATA PROCESSING AND PREPARATION (CLEANING AND CORRECTIONS)
 ******************************************
-do "1.0. ${proj}_${tool}_Decryption.do"
+*do "1.0. ${proj}_${tool}_Decryption.do"
 cd "$dofiles"
 do "1.1. ${proj}_${tool}_Export.do"
 cd "$dofiles"
@@ -142,6 +142,7 @@ cd "$dofiles"
 ******************************************
 do "1.4. ${proj}_${tool}_HFCs.do"
 cd "$dofiles"
+ex
 *do "2.2 ${proj}_${tool}_BC_Sample.do"
 *cd "$dofiles"
 
