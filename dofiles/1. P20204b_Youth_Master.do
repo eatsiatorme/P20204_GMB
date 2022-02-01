@@ -87,7 +87,7 @@ global cleaning "$encrypted_path\cleaning"
 global qx "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\03_Endline\Programming\Tekki_Fii_PV_Endline_WIP.xlsx" // improve this
 global sample_list "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\03_Endline\Programming\" // UPDATE ONCE WE HAVE A PROPER PLACE FOR THE SAMPLE
 global table_name "Tekki_Fii_PV_3"
-global main_table "Tekki_Fii_PV_3_checked"
+global main_table "${table_name}_checked"
 
 global errorfile "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\HFC\test"
 
