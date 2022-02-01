@@ -889,10 +889,12 @@ capture confirm string variable Action
 replace status = 1 if still_error==3 & Action!="Ignore"
 replace status = 2 if still_error==1
 replace status = 3 if Action=="Ignore" & status != 2
+replace status = 4 if Action=="Back-check"
+
 
 drop still_error
 
-label def l_status 1 "Error still remains" 2 "Error No Longer Remains" 3 "Error Ignored"
+label def l_status 1 "Error still remains" 2 "Error No Longer Remains" 3 "Error Ignored" 4 "Sent for Back-check"
 label val status l_status
 
 keep status
@@ -969,6 +971,79 @@ local n_vars `r(k)' // count number of variables
 
 }
 
+
+
+
+********************************************************************************
+* CREATING BACK CHECK
+********************************************************************************
+
+import excel "$hfc_output\Checking_List_Backcheck.xlsx", clear firstrow cellrange(B2)
+*keep bc_counter error_counter
+drop scto_link
+su bc_counter
+local bc_check = `r(N)'
+if `bc_check'>0 {
+	local bc_check_count = `r(max)'
+	tempfile already_in_bc
+	save `already_in_bc'
+}
+
+
+import excel "$hfc_output\Checking_List.xlsx", clear firstrow cellrange(A2)
+
+capture confirm string variable Action
+			if _rc == 0 {
+			}
+			else {
+			tostring Action, replace
+
+			}
+
+keep if Action=="Back-check"
+drop Action status
+
+if `bc_check'==0 {
+gen bc_counter = _n	
+}
+
+if `bc_check'>0 {
+merge 1:1 error_counter using `already_in_bc', keep(1) nogen keepusing(bc_counter)
+sort error_counter
+replace bc_counter = _n + `bc_check_count'
+merge 1:1 error_counter using `already_in_bc', keep(1 2) nogen force // remove force later
+
+}
+sort bc_counter
+order bc_counter, after(error_counter)
+
+*drop scto_link
+
+count 
+if `r(N)' > 0 {
+export excel "$hfc_output\Checking_List_Backcheck.xlsx", sheet("Sheet1", modify) keepcellfmt cell(B3)
+
+}
+
+ex
+*******************************************************************************
+* Mata Formatting Checking List
+*******************************************************************************
+des, short
+local n_vars `r(k)' // count number of variables
+
+		unab allvars : _all
+		local pos : list posof "scto_link" in allvars
+		local pos = `pos' + 1 // Because of status column
+		di "`pos'"
+		su field_counter
+		local rowbeg = `r(min)' + 2
+		local rowend = `r(max)' + 2
+		mata: add_scto_link("$ONEDRIVE\P20204b_EUTF_GMB - Documents\04_Field Work\Share with CepRass\Checking_List_CepRass.xlsx", "Sheet1", "scto_link", `pos', `rowbeg', `rowend')
+
+		mata: check_list_format("$ONEDRIVE\P20204b_EUTF_GMB - Documents\04_Field Work\Share with CepRass\Checking_List_CepRass.xlsx", "Sheet1", "ApplicantID", 1, `rowbeg', `rowend', `n_vars')	
+
+}
 ex
 
 
