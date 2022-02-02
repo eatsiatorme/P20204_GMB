@@ -527,18 +527,21 @@ end
 		foreach var of varlist $keepvar {
 			capture confirm string variable `var'
 			if _rc == 0 {
+			gen variable_$keepvar_counter = "`var'" + " = " + `var'
+			local lbl : variable label `var' 
+			gen label_$keepvar_counter = "`lbl'"
+			global keepvar_counter = ${keepvar_counter}+1
+			drop `var'
 			}
 			else {
 			tostring `var', gen(`var'_str)
-
-			}
-		
 			gen variable_$keepvar_counter = "`var'" + " = " + `var'_str
 			drop `var'_str
 			local lbl : variable label `var' 
 			gen label_$keepvar_counter = "`lbl'"
 			global keepvar_counter = ${keepvar_counter}+1
 			drop `var'
+			}
 		}
 		
 		
@@ -641,6 +644,14 @@ else {
 
 
 
+****************************
+* INTERVIEWER COMMENTS
+****************************
+
+cd "$dofiles"	
+include "1.46. P20204b_Youth_HFC_Enum_Com.do"
+
+
 
 ********************************************************************************
 * APPENDING 
@@ -678,6 +689,7 @@ save `other'
 
 global add_outlier_sheet = 0
 import excel "${outfile}", sheet("11. outliers") clear first case(preserve)
+
 count if ApplicantID != .
 if `r(N)' > 0 {
 		global add_outlier_sheet = 1
@@ -688,6 +700,19 @@ drop variable value
 tempfile outliers
 save `outliers'
 
+
+import excel "${outfile}", sheet("10. comments") clear first case(preserve)
+count if ApplicantID != .
+if `r(N)' > 0 {
+	global add_comments_sheet = 1
+	rename value variable_1 // value instead of variable + value as already done the concat
+	rename comment label_1
+	drop variable label
+gen comments = 1
+}
+tempfile comments
+save `comments'
+
 use `logic', clear
 if $add_constraints_sheet == 1 {
 append using `constraints', gen(constraint)
@@ -697,6 +722,9 @@ append using `other', gen(other)
 }
 if $add_outlier_sheet == 1 {
 append using `outliers', gen(outliers)
+}
+if $add_comments_sheet == 1 {
+append using `comments', gen(comments)
 }
 
 gen check_type = 1 if logic == 1
@@ -714,8 +742,12 @@ replace check_type = 4 if outliers == 1
 drop outliers
 }
 
+if $add_comments_sheet == 1 {
+replace check_type = 5 if comments == 1 
+drop comments
+}
 
-label def l_checktype 1 "Logic Check" 2 "Constraint Error" 3 "Other Quality Check" 4 "Outlier"
+label def l_checktype 1 "Logic Check" 2 "Constraint Error" 3 "Other Quality Check" 4 "Outlier" 5 "Enumerator Comments"
 label val check_type l_checktype
 
 
@@ -751,7 +783,7 @@ if !_rc {
 *******************************************************************************
 
 generate submissiondate_str = string(submissiondate, "%tc")
-egen error_id = concat(submissiondate_str ApplicantID z1 check_type message)
+egen error_id = concat(variable_1 label_1 submissiondate_str ApplicantID z1 check_type message)
 
 
 drop z1 z2
@@ -917,10 +949,7 @@ if `field_check'>0 {
 
 
 import excel "$hfc_output\Checking_List.xlsx", clear firstrow cellrange(A2)
-merge m:1 ApplicantID using `scto_link_var', nogen keep(3)
-drop scto_link
-rename scto_link2 scto_link
-order scto_link, after(message)
+
 
 capture confirm string variable Action
 			if _rc == 0 {
@@ -934,14 +963,22 @@ keep if Action=="Field Clarification"
 drop Action status
 
 if `field_check'==0 {
-gen field_counter = _n	
+gen field_counter = _n
+merge m:1 ApplicantID using `scto_link_var', nogen keep(3)
+drop scto_link
+rename scto_link2 scto_link
+order scto_link, after(message)	
 }
 
 if `field_check'>0 {
 merge 1:1 error_counter using `already_in_field', keep(1) nogen keepusing(field_counter)
 sort error_counter
 replace field_counter = _n + `field_check_count'
-merge 1:1 error_counter using `already_in_field', keep(1 2) nogen force // remove force later
+merge 1:1 error_counter using `already_in_field', keep(1 2) nogen //force // remove force later
+merge m:1 ApplicantID using `scto_link_var', nogen keep(3)
+drop scto_link
+rename scto_link2 scto_link
+order scto_link, after(message)
 
 }
 sort field_counter
@@ -980,7 +1017,7 @@ local n_vars `r(k)' // count number of variables
 
 import excel "$hfc_output\Checking_List_Backcheck.xlsx", clear firstrow cellrange(B2)
 *keep bc_counter error_counter
-drop scto_link
+*drop scto_link
 su bc_counter
 local bc_check = `r(N)'
 if `bc_check'>0 {
