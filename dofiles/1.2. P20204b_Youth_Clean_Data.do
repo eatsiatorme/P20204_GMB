@@ -909,6 +909,14 @@ gen complete = (status==1)
 
 gen duration_m = duration / 60
 
+gen timestamp_visit_2=clock(timestamp_visit,"YMDhms",2025)
+format timestamp_visit_2 %tc
+drop timestamp_visit
+rename timestamp_visit_2 timestamp_visit
+
+
+gen interview_date = dofc(endtime)
+format interview_date %td
 
 ********************************************************************************
 * ORDERING VARIABLES

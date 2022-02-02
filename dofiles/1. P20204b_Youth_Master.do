@@ -21,13 +21,14 @@ net install ctomergecom, all replace ///
 from("https://raw.githubusercontent.com/c4ed-mannheim/commentsmerge/main")
 
 *tamerge - can't seem to download from github
+* inttrend - user package
 
 net install ipacheck, from("https://raw.githubusercontent.com/PovertyAction/high-frequency-checks/master/ado") replace 
 
 ssc install cfout
 ssc install bcstats
 ssc install readreplace
-
+ssc install match
 ssc install fre
 
 */
@@ -116,7 +117,6 @@ global sub_date "submissiondate"
 
 
 
-
 n: di "Hi `c(username)'!"
 
 cd "$dofiles"
@@ -142,7 +142,9 @@ cd "$dofiles"
 ******************************************
 do "1.4. ${proj}_${tool}_HFCs.do"
 cd "$dofiles"
-ex
+do "1.5. ${proj}_${tool}_Enumerator_Trends.do"
+cd "$dofiles"
+
 *do "2.2 ${proj}_${tool}_BC_Sample.do"
 *cd "$dofiles"
 
@@ -151,7 +153,7 @@ ex
 ******************************************
 do "3.1. ${proj}_${tool}_Progress.do"
 cd "$dofiles"
-
+ex
 ******************************************
 ** 4. PRELIMINARY ANALYSIS
 ******************************************
