@@ -123,12 +123,13 @@ cd "$dofiles"
 
 }
 
-
+include "1.01. ${proj}_${tool}_Key_Variables.do"
+cd "$dofiles"
 
 ******************************************
 ** 1. DATA PROCESSING AND PREPARATION (CLEANING AND CORRECTIONS)
 ******************************************
-*do "1.0. ${proj}_${tool}_Decryption.do"
+*do "1.05. ${proj}_${tool}_Decryption.do"
 cd "$dofiles"
 do "1.1. ${proj}_${tool}_Export.do"
 cd "$dofiles"
@@ -153,7 +154,12 @@ cd "$dofiles"
 ******************************************
 do "3.1. ${proj}_${tool}_Progress.do"
 cd "$dofiles"
-ex
+
+******************************************
+** 4. DE-IDENTIFICATION OF DATA
+******************************************
+do "4.1. ${proj}_${tool}_Data_Protection.do"
+cd "$dofiles"
 ******************************************
 ** 4. PRELIMINARY ANALYSIS
 ******************************************

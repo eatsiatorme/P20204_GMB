@@ -14,8 +14,8 @@ format interview_date %td
 global n_min = 10 
 global sd = 3
 
-global trigger "d1 b1 b2 c1"
-global outcome "ave_month_inc brs_score spe_score prep_score active_score"
+global trigger "d1 b2 c1"
+global outcome "$component_vars_bin $component_vars_cont $outcome_vars_bin $outcome_vars_cont"
 
 
 
