@@ -30,7 +30,7 @@ ssc install bcstats
 ssc install readreplace
 ssc install match
 ssc install fre
-
+ssc install scto
 */
 
 
@@ -54,7 +54,7 @@ capture mkdir "C:\Users\/`c(username)'\Desktop\P20204b_GMB_Local\"
 capture mkdir "C:\Users\/`c(username)'\Desktop\P20204b_GMB_Local\/$round\"
 capture mkdir "C:\Users\/`c(username)'\Desktop\P20204b_GMB_Local\/$round\/$cycle\"
 capture mkdir "C:\Users\/`c(username)'\Desktop\P20204b_GMB_Local\/$round\/$cycle\/$tool\"
-global local_path "C:\Users\/`c(username)'\Desktop\P20204b_GMB_Local\/$round\/$cycle\/$tool\"
+global local_path "C:\Users\/`c(username)'\Desktop\P20204b_GMB_Local\/$round\/$cycle\/$tool\pretest\"
 
 }
 
@@ -65,7 +65,7 @@ capture mkdir "C:\Users\/`c(username)'\OneDrive - C4ED\Dokumente\Desktop\P20204b
 capture mkdir "C:\Users\/`c(username)'\OneDrive - C4ED\Dokumente\Desktop\P20204b_GMB_Local\/$round\"
 capture mkdir "C:\Users\/`c(username)'\OneDrive - C4ED\Dokumente\Desktop\P20204b_GMB_Local\/$round\/$cycle\"
 capture mkdir "C:\Users\/`c(username)'\OneDrive - C4ED\Dokumente\Desktop\P20204b_GMB_Local\/$round\/$cycle\/$tool\"
-global local_path "C:\Users\/`c(username)'\OneDrive - C4ED\Dokumente\Desktop\P20204b_GMB_Local\/$round\/$cycle\/$tool\"
+global local_path "C:\Users\/`c(username)'\OneDrive - C4ED\Dokumente\Desktop\P20204b_GMB_Local\/$round\/$cycle\/$tool\pretest\"
 }
 
 
@@ -85,9 +85,9 @@ global media_path "$local_path\media"
 global exported "$encrypted_path\exported"
 global corrections "$encrypted_path\corrections"
 global cleaning "$encrypted_path\cleaning"
-global qx "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\03_Endline\Programming\Tekki_Fii_PV_Endline_WIP.xlsx" // improve this
-global sample_list "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\03_Endline\Programming\" // UPDATE ONCE WE HAVE A PROPER PLACE FOR THE SAMPLE
-global table_name "Tekki_Fii_PV_3"
+global qx "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\03_Endline\Programming\Pre-test tool\Tekki_Fii_PV_Endline_WIP_pt.xlsx" // improve this
+global sample_list "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\03_Endline\Programming\Pre-test tool\" // UPDATE ONCE WE HAVE A PROPER PLACE FOR THE SAMPLE
+global table_name "Tekki_Fii_PV_3_pt"
 global main_table "${table_name}_checked"
 
 global errorfile "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\HFC\test"
