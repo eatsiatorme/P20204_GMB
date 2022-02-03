@@ -175,7 +175,7 @@ replace profit_kept_`u'=round(profit_kept_`u')
 
 
 */
-gen current_month_dts="1/" + current_month + "/2021" if completed_interview==1
+gen current_month_dts="1/" + current_month + "/2022" if completed_interview==1
 gen current_month_dt=date(current_month_dts,"DMY",2025) if completed_interview==1
 drop current_month_dts
 format %td current_month_dt
