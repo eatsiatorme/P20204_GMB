@@ -55,7 +55,7 @@ clear
 cd "$local_path"
 
 
-do "import_${table_name}.do"
+do "import_Tekki_Fii_PV_3.do"
 
 ******************************
 **Copy Files to Exported**

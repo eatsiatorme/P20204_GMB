@@ -1,4 +1,4 @@
-use "$corrections\/${table_name}_checked.dta", clear
+use "H:\corrections\Tekki_Fii_PV_3_checked.dta", clear
 
 			    gen scto_link2=""
 		local bad_chars `"":" "%" " " "?" "&" "=" "{" "}" "[" "]""'
@@ -27,7 +27,7 @@ cd "$media_path"
 
 global i=0 // Do not change
 
-use "$corrections\/${table_name}_checked.dta", clear
+use "$corrections\Tekki_Fii_PV_3_checked.dta", clear
 
 keep if `fname'!=""
 tempfile only_comments
@@ -153,11 +153,4 @@ gen x1 = z1
 gen x2 = z2
 drop z1 z2
 rename (x1 x2) (z1 z2)
-
-global comments_sheet_exist = 0
-
-count 
-if `r(N)' > 0 {
-	global comments_sheet_exist = 1
 export excel "${outfile}", sheet("10. comments", modify) firstrow(var)
-}
