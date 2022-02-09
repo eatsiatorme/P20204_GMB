@@ -43,6 +43,23 @@ foreach file of local files{
 use "$cleaning\/$table_name", clear
 
 
+********** DELETE BEFORE FIELD
+drop if key=="uuid:1710822a-311e-49d1-8867-0bd1326dd246"
+drop if key=="uuid:4c28c305-2785-40bc-9fcc-2431bb56905d"
+drop if key=="uuid:80764914-f0ea-4558-a6d6-ee27fd41f690"
+drop if key=="uuid:dd31e9cd-4965-4257-b824-c3ce61f1084a"
+drop if key=="uuid:ce85de0a-07a1-4d05-a01b-6b4dc9b12ad7"
+drop if key=="uuid:ec54e74a-7f0a-4949-973b-b5b4dd8d34b3"
+
+replace id_key ="9999" if key=="uuid:5eccde99-a5fc-4081-abef-12ecf085872a"
+replace id_key ="9998" if key=="uuid:99ad00ad-4647-447e-b0a8-1c9dfe841e6b"
+replace id_key ="9997" if key=="uuid:9d7facee-7f17-4bbe-ab51-d2caa0e1ba93"
+
+
+**********
+
+
+
 **************************************************
 * MERGING IN MEDIA
 **************************************************
@@ -84,6 +101,17 @@ emp_ilo
 , replace
 ;
 #d cr
+
+
+su b2 
+local jobs_roster_rows = `r(max)'
+
+foreach u of num 1/`jobs_roster_rows' {
+	replace b21_`u' = 0 if b21_`u'==-98
+}
+
+
+
 
 
 ds, has(type numeric)
@@ -162,8 +190,7 @@ label var current_bus "Currently owns a business"
 ** Income/Earnings
 * Measure 1: Gambian Labour Force Survey Definition – Sum of all the compensation (cash, in-kind) received from economic activities over reference period
 
-su b2 
-local jobs_roster_rows = `r(max)'
+
 
 foreach u of num 1/`jobs_roster_rows' {
 
