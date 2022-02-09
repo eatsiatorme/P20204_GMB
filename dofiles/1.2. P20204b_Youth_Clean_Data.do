@@ -214,12 +214,12 @@ gen ref_months="1/" + reference_month + "/" + reference_year if completed_interv
 gen ref_month=date(ref_months,"DMY",2025) if completed_interview==1
 format %td ref_month
 
-foreach u of num 1/3 {
+foreach u of num 1/`jobs_roster_rows' {
 	clonevar b5_`u'_analysis =  b5_`u'
 	clonevar b4_`u'_analysis =  b4_`u'
 }
 	
-foreach i of num 1/3 {
+foreach i of num 1/`jobs_roster_rows' {
 	replace b5_`i'_analysis=current_month_dt if b4_`i'_analysis!=.
 	replace b4_`i'_analysis=ref_month if b4_`i'_analysis<ref_month
 	gen months_in_job_`i' = round((b5_`i'_analysis - b4_`i'_analysis)/(365/12))
@@ -232,7 +232,7 @@ label var sum_inc_reference "Sum of all the compensation (cash, in-kind) receive
 
 * Measure 2: Field (2019) – Average Monthly earnings if currently employed
 
-foreach i of num 1/3 {
+foreach i of num 1/`jobs_roster_rows' {
 gen current_emp_inc_month_`i'=(emp_inc_month_`i' + emp_inkind_month_`i') if b3_`i'==1
 gen current_profit_month_`i'=profit_month_`i' if b3_`i'==1
 }
@@ -294,7 +294,7 @@ label var bus_reg_rate "Rate that Business owned is registered (Across all owned
 */
 ** Occupational safety
 * Measure: Reported an injury or work related illness during job
-foreach i of num 1/3 {
+foreach i of num 1/`jobs_roster_rows' {
 gen work_inj_`i'=(inlist(b9_`i', 1, 3)) if b1==1
 gen work_ill_`i'=(inlist(b9_`i', 1, 2)) if b1==1
 gen work_hurt_`i'=(work_inj_`i'==1 | work_ill_`i'==1) if b1==1

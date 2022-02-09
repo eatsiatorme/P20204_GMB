@@ -41,6 +41,9 @@ global date = string(date("`c(current_date)'","DMY"),"%tdNNDD")
 global time = string(clock("`c(current_time)'","hms"),"%tcHHMMSS")
 global datetime = "$date"+"$time"
 
+
+global hfc = 1
+
 // Round > Cycle > Tool Globals
 global proj "P20204b"
 global round "Endline"
@@ -87,7 +90,7 @@ global corrections "$encrypted_path\corrections"
 global cleaning "$encrypted_path\cleaning"
 global qx "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\03_Endline\Programming\Tekki_Fii_PV_Endline_WIP.xlsx" // improve this
 global sample_list "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\03_Endline\Programming\" // UPDATE ONCE WE HAVE A PROPER PLACE FOR THE SAMPLE
-global table_name "Tekki_Fii_PV_3"
+global table_name "Tekki_Fii_PV_4"
 global main_table "${table_name}_checked"
 
 global errorfile "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\HFC\test"
@@ -138,6 +141,7 @@ cd "$dofiles"
 do "1.3. ${proj}_${tool}_Corrections_Data.do"
 cd "$dofiles"
 
+if $hfc == 1 {
 ******************************************
 * 2. DATA QUALITY CHECKS
 ******************************************
@@ -148,7 +152,7 @@ cd "$dofiles"
 
 *do "2.2 ${proj}_${tool}_BC_Sample.do"
 *cd "$dofiles"
-
+}
 ******************************************
 * 3. FIELDWORK PROGRESS
 ******************************************
