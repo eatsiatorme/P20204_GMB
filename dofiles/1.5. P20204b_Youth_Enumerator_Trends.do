@@ -1,15 +1,6 @@
 cd "H:\corrections"
-*use $main_table, clear
+use $main_table, clear
 
-// DELETE BEGIN
-use "C:\Users\NathanSivewright\C4ED\P20204b_EUTF_GMB - Documents\02_Analysis\02_Data\Midline\C2\Youth\data_an.dta", clear
-encode z1_text, gen(z1)
-
-gen interview_date = dofc(starttime)
-format interview_date %td
-
-
-// DELETE END
 
 global n_min = 10 
 global sd = 3
@@ -20,8 +11,9 @@ global outcome "$component_vars_bin $component_vars_cont $outcome_vars_bin $outc
 
 
 
-*replace duration_m=. if status!=1
-replace duration_m=. if completed!=1 // delete
+replace duration_m=. if status!=1
+
+gen status_1 = (status==1)
 
 *bysort interview_date z1: egen interview_per_day = total(completed) // completed => status==1
 *bysort interview_date z1: egen hours_per_day = total(duration_m) // completed => status==1
@@ -30,8 +22,8 @@ replace duration_m=. if completed!=1 // delete
 tempfile row_interview
 save `row_interview'
 
-collapse (sum)completed duration_m, by(interview_date z1)
-clonevar interview_per_day=completed
+collapse (sum)status_1 duration_m, by(interview_date z1)
+clonevar interview_per_day=status_1
 gen hours_per_day=duration_m/60
 
 tempfile row_date_enum
@@ -42,7 +34,17 @@ save `row_date_enum'
 ********************************************************************************
 use `row_interview', clear
 tempfile interviewers
-inttrend duration_m $trigger $outcome using `interviewers', interviewer(z1) 
+
+
+su duration_m $trigger $outcome 
+
+foreach var of varlist duration_m $trigger $outcome {
+	
+}
+
+*inttrend duration_m $trigger $outcome using `interviewers', interviewer(z1) 
+
+inttrend duration_m $trigger using `interviewers', interviewer(z1) 
 use `interviewers', clear
 
 
@@ -55,25 +57,32 @@ gen trigger = .
 gen outcome = .
 gen duration_check = 1 if var=="duration_m"
 gen flag = 0
+local swilk_`var' = 0
 
 levelsof var, l(var_list)
 levelsof interviewer, l(interviewer_list)
 
 foreach l of local var_list {
+	di "`l'"
 	replace trigger=(strpos("$trigger", "`l'")>0) if var=="`l'"
 	replace outcome=(strpos("$outcome", "`l'")>0) if var=="`l'"
+	su mu_i if var=="`l'" 
+	if `r(sd)' > 0 {
+	local swilk_`var' = 1
 	swilk mu_i if var=="`l'" 
 	local swilk_p_local = `r(p)'
 	replace swilk_p = `r(p)' if var=="`l'"
+	}
 	foreach m of local interviewer_list {
 	su mu_i if var=="`l'" & interviewer!=`m' , d
 	replace median = `r(p50)' if var=="`l'" & interviewer==`m'
 	replace upper = `r(mean)' + (`r(sd)' * ${sd}) if var=="`l'" & interviewer==`m'
 	replace lower = `r(mean)' - (`r(sd)' * ${sd}) if var=="`l'" & interviewer==`m'
 }
-
+if `swilk_`var'' == 1 {
 if `swilk_p_local' < 0.05 {
 	di "`l' does not follow a normal distribution"
+}
 }
 }
 
@@ -110,7 +119,7 @@ if `r(N)' > 0 {
 
 local rowbeg = `r(N)' + 2
 di "`rowbeg'"
-export excel "$hfc_output\Enumerator_Trends.xlsx", sheet("Outlier", modify) keepcellfmt cell(A3)
+export excel "$hfc_output\Enumerator_Trends.xlsx", sheet("Outlier", replace) keepcellfmt cell(A3)
 mata: check_list_format("$hfc_output\Enumerator_Trends.xlsx", "Outlier", "var", 1, 3, `rowbeg', `n_vars')	
 
 }
@@ -124,7 +133,7 @@ use `enumerator_trends', clear
 bysort var: egen tot_n = total(int_n)
 
 keep if swilk_p<0.05 & tot_n > 40
-ex
+
 count
 if `r(N)' > 0 {
 distinct interviewer
@@ -177,7 +186,7 @@ des, short
 local n_vars `r(k)'
 local rowbeg = `r(N)' + 1
 di "`rowbeg'"
-export excel "$hfc_output\Enumerator_Trends.xlsx", sheet("Contact Time", modify) keepcellfmt cell(A2)
+export excel "$hfc_output\Enumerator_Trends.xlsx", sheet("Contact Time", replace) keepcellfmt cell(A2)
 mata: check_list_format("$hfc_output\Enumerator_Trends.xlsx", "Contact Time", "z1", 1, 2, `rowbeg', `n_vars')	
 }
 

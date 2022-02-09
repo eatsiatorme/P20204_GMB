@@ -858,7 +858,10 @@ drop error_id _merge submissiondate_str
 
 
 merge m:1 ApplicantID using `scto_link_var', nogen keep(3)
+capture confirm variable scto_link
+if !_rc {
 drop scto_link
+}
 rename scto_link2 scto_link
 
 sort error_counter
@@ -890,7 +893,9 @@ export excel "$hfc_output\Checking_List.xlsx", sheet("Sheet1", modify) keepcellf
 		mata: add_scto_link("$hfc_output\Checking_List.xlsx", "Sheet1", "scto_link", `pos', `rowbeg', `rowend')
 
 		mata: check_list_format("$hfc_output\Checking_List.xlsx", "Sheet1", "ApplicantID", 1, `rowbeg', `rowend', `n_vars')	
-}
+
+	copy "$hfc_output\Checking_List.xlsx" "$hfc_output\archive\Checking_List_$datetime.xlsx", replace		
+		}
 
 
 
@@ -942,6 +947,14 @@ su field_counter
 local field_check = `r(N)'
 if `field_check'>0 {
 	local field_check_count = `r(max)'
+	foreach var of varlist variable_* label_* {
+		capture confirm numeric variable `var'
+		if _rc == 0 {
+		tostring `var', gen(`var'_str)
+		order `var'_str, after(`var')
+		drop `var'
+		rename `var'_str `var'
+	}
 	tempfile already_in_field
 	save `already_in_field'
 }
@@ -971,6 +984,15 @@ order scto_link, after(message)
 }
 
 if `field_check'>0 {
+		foreach var of varlist variable_* label_* {
+		capture confirm numeric variable `var'
+		if _rc == 0 {
+		tostring `var', gen(`var'_str)
+		order `var'_str, after(`var')
+		drop `var'
+		rename `var'_str `var'
+		}
+	}
 merge 1:1 error_counter using `already_in_field', keep(1) nogen keepusing(field_counter)
 sort error_counter
 replace field_counter = _n + `field_check_count'

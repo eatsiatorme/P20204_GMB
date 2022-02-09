@@ -59,7 +59,7 @@ putexcel B`row'=matrix(y)
 
 fre z1 duration_m
 local row = 22
-forvalues i = 1/9 {
+forvalues i = 1/10 {
 	local rowx = `row'+`i'
 	count if z1==`i' & complete==1
 	if `r(N)' > 0 {

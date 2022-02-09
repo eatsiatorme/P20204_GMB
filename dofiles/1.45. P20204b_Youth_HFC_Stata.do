@@ -64,7 +64,13 @@ cd "H:\corrections"
 	global keepvar "full_name respondent_name"
 	addErr "Pre-loaded name is not similar to the name entered in the survey"
 
+	global i=6
+	use $main_table, clear
+	gen error=${i} if ApplicantID==100051
+	global keepvar "consent"
+	addErr "FLAGGED ID - 8th Feb"
 	
+
 		
 	/*
 		global i=
