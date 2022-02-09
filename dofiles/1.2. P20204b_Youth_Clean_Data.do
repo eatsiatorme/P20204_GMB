@@ -371,10 +371,10 @@ label var b12_1_`i' "b12. Business officially registered Job `i' [Ministry of Ju
 label var b12_2_`i' "b12. Business officially registered Job `i' [Gambia Chamber of Commerce]"
 label var b12_3_`i' "b12. Business officially registered Job `i' [The Registrar of Companies]"
 label var b12__99_`i' "b12. Business officially registered Job `i' [Don't know]"
-label var b12__95_`i' "b12. Business officially registered Job `i' [None of the above]"
+*label var b12__95_`i' "b12. Business officially registered Job `i' [None of the above]"
 label var b12__96_`i' "b12. Business officially registered Job `i' [Other specify]"
 
-labe var b13_`i' "b13. official work contract written or oral Job `i'"
+label var b13_`i' "b13. official work contract written or oral Job `i'"
 label var b14_`i' "b14. How many months longer in Job `i'"
 label var b15_`i' "b15. Number of hours worked in typical day Job `i'"
 label var b16_`i' "b16. Number of days worked in a typical week Job `i'"
@@ -390,11 +390,11 @@ label var b18_unit_s_`i' "b18. Number of months in a [if]season or contract for 
 label var b18_unit_val_`i' "b18. Time frame of season and contract" 
 label var emp_inkind_month_`i' "Total monthly average payment in-kind Job `i'"
 
-+label var b20_1_`i' "b20. Business officially registered Job `i' [Ministry of Justice]" 
+label var b20_1_`i' "b20. Business officially registered Job `i' [Ministry of Justice]" 
 label var b20_2_`i' "b20. Business officially registered Job `i' [Gambian Chamber of Commerce]"
 label var b20_3_`i' "b20. Business officially registered Job `i' [The Registrar of Companies]"
 label var b20__99_`i' "b20. Business officially registered Job `i' [Don't know]"
-label var b20__95_`i' "b20. Business officially registered Job `i' [None of the above]"
+*label var b20__95_`i' "b20. Business officially registered Job `i' [None of the above]"
 
 label var b21_`i' "b21. Besides yourself how many workers do you employ Job `i'? "
 label var b22_`i' "b22. Number of hours business is operational in a typical day Job `i'"
@@ -439,20 +439,6 @@ label var current_profit_month_`i' "Monthly profit if self employed from Job `i'
 
 label var b1 "b1. Work or employment in the past 6 months"
 label var b2 "b2. Number of stable jobs in the past 6 months"
-label var job_name_1 "Name of Job 1"
-label var b3_1 "b3. Employment status in Job 1"
-label var b4_1 "b4. When did you start in Job 1" 
-label var b4_time_1 "b4. Time since the beginning of Job 1"
-label var b5_1 "b5. Time of end of employment Job 1"
-label var b5_time_1 "b5. Time of end of employment Job 1"
-label var b6_1 "b6. Working status in Job 1"
-label var b6oth_1 "b6. Other working status in job 1"
-label var isic_1_1 "ISIC1. Employment by industry categorisation 1 of Job 1"
-label var isic_2_1 "IISIC2. Emplyoyment by industry categorisation 2 of Job 1"
-label var b9_1 "b9. Suffered job related injury in Job 1"
-label var b11_1 "b11. How job was found Job 1"
-label var b11_other_1 "b11. Other mweans job was found job 1"
-
 
 label var b34 "b34. What was your working status in small job done in the past 7 days"
 label var isic_1_seven "ISIC1. empolyomeyment by industry categorisation 1 of small job in past 7 days"
@@ -828,14 +814,18 @@ gen complete = (status==1)
 
 gen duration_m = duration / 60
 
-gen timestamp_visit_2=clock(timestamp_visit,"YMDhms",2025)
-format timestamp_visit_2 %tc
-drop timestamp_visit
-rename timestamp_visit_2 timestamp_visit
+gen timestamp_visit_cet=clock(timestamp_visit,"YMDhms",2025)
+format timestamp_visit_cet %tc 
 
+replace timestamp_visit_cet = timestamp_visit_cet + ${timezone}*(60*60*1000)
+
+
+drop timestamp_visit
 
 gen interview_date = dofc(endtime)
 format interview_date %td
+
+drop simid
 
 ********************************************************************************
 * ORDERING VARIABLES

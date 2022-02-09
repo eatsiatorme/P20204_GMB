@@ -186,7 +186,7 @@ des, short
 local n_vars `r(k)'
 local rowbeg = `r(N)' + 1
 di "`rowbeg'"
-export excel "$hfc_output\Enumerator_Trends.xlsx", sheet("Contact Time", replace) keepcellfmt cell(A2)
+export excel "$hfc_output\Enumerator_Trends.xlsx", sheet("Contact Time", modify) keepcellfmt cell(A2)
 mata: check_list_format("$hfc_output\Enumerator_Trends.xlsx", "Contact Time", "z1", 1, 2, `rowbeg', `n_vars')	
 }
 

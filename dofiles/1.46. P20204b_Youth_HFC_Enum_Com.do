@@ -1,4 +1,4 @@
-use "H:\corrections\Tekki_Fii_PV_3_checked.dta", clear
+use "$corrections\/${main_table}.dta", clear
 
 			    gen scto_link2=""
 		local bad_chars `"":" "%" " " "?" "&" "=" "{" "}" "[" "]""'
@@ -27,7 +27,7 @@ cd "$media_path"
 
 global i=0 // Do not change
 
-use "$corrections\Tekki_Fii_PV_3_checked.dta", clear
+use "$corrections\/${main_table}.dta", clear
 
 keep if `fname'!=""
 tempfile only_comments
@@ -139,7 +139,9 @@ else {
 }
 
 replace value = "No value" if value == ""
-replace label = "No label" if label == ""
+*replace label = "No label" if label == ""
+drop if label == ""
+drop if comment =="[EMPTY COMMENT BY ENUMERATOR]"
 
 gen message = "Enumerator added a comment on this question"
 

@@ -9,29 +9,17 @@ b1b
 #d ;
 global component_vars_cont
 b2
-b21_1
-b21_2
-b21_3
-emp_inc_month_1 
-emp_inc_month_2 
-emp_inc_month_3
-sales_month_1 
-sales_month_2 
-sales_month_3
-profit_month_1 
-profit_month_2
-profit_month_3
+b21_?
+emp_inc_month_? 
+sales_month_?
+profit_month_?
 ;
 #d cr
 
 #d ;
 global component_vars_cat
-b6_1
-b6_2
-b6_3
-job_category_1 
-job_category_2 
-job_category_3
+b6_?
+job_category_?
 ;
 #d cr
 

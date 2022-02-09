@@ -16,5 +16,9 @@ capture veracrypt, dismount drive(H)
 cd "$project_folder"
 veracrypt vault, mount drive($encrypted_drive)
 
+
+
+
 n: di "${proj}_${round}_Decryption.do Completed"
 *}
+

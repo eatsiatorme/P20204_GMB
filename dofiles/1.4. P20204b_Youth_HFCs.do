@@ -380,7 +380,7 @@ global no_new_checks = 0
 * Take SurveyCTO Server Links
 ********************************************************************************
 
-use "H:\corrections\Tekki_Fii_PV_3_checked.dta", clear
+use "$corrections\/${main_table}.dta", clear
 
 			    gen scto_link2=""
 		local bad_chars `"":" "%" " " "?" "&" "=" "{" "}" "[" "]""'
@@ -656,9 +656,10 @@ include "1.46. P20204b_Youth_HFC_Enum_Com.do"
 ********************************************************************************
 * APPENDING 
 ********************************************************************************
-
+global add_logic_sheet = 0
 import excel "${outfile}", sheet("6. logic") clear first case(preserve)
 count if ApplicantID != .
+
 if `r(N)' > 0 {
 	global add_logic_sheet = 1
 gen logic = 1
@@ -713,7 +714,12 @@ gen comments = 1
 tempfile comments
 save `comments'
 
+clear
+
+if $add_logic_sheet == 1 {
 use `logic', clear
+}
+
 if $add_constraints_sheet == 1 {
 append using `constraints', gen(constraint)
 }
@@ -727,8 +733,13 @@ if $add_comments_sheet == 1 {
 append using `comments', gen(comments)
 }
 
-gen check_type = 1 if logic == 1
+gen check_type=.
+
+if $add_logic_sheet == 1 {
+replace check_type = 1 if logic == 1
 drop logic
+}
+
 if $add_constraints_sheet == 1 {
 replace check_type = 2 if constraint == 1
 drop constraint

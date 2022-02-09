@@ -1,4 +1,4 @@
-use "H:\corrections\Tekki_Fii_PV_3_checked.dta", clear
+use "H:\corrections\Tekki_Fii_PV_4_checked.dta", clear
 
 ds, has(type numeric)
 local all_numeric `r(varlist)'

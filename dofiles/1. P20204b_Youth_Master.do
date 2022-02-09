@@ -52,6 +52,7 @@ global tool "Youth"
 
 // Local Paths
 if "`c(username)'"=="NathanSivewright" { 
+	global timezone = 1
 global dofiles "C:\Users\/`c(username)'\Documents\GitHub\P20204_GMB\dofiles"
 capture mkdir "C:\Users\/`c(username)'\Desktop\P20204b_GMB_Local\"
 capture mkdir "C:\Users\/`c(username)'\Desktop\P20204b_GMB_Local\/$round\"
@@ -62,6 +63,7 @@ global local_path "C:\Users\/`c(username)'\Desktop\P20204b_GMB_Local\/$round\/$c
 }
 
 if "`c(username)'"=="ElikplimAtsiatorme" {
+		global timezone = 1
 // Making local folder on desktop for data
 global dofiles "C:\Users\/`c(username)'\Documents\GitHub\P20204_GMB\P20204_GMB\dofiles"
 capture mkdir "C:\Users\/`c(username)'\OneDrive - C4ED\Dokumente\Desktop\P20204b_GMB_Local\"
@@ -89,7 +91,7 @@ global exported "$encrypted_path\exported"
 global corrections "$encrypted_path\corrections"
 global cleaning "$encrypted_path\cleaning"
 global qx "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\03_Endline\Programming\Tekki_Fii_PV_Endline_WIP.xlsx" // improve this
-global sample_list "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\03_Endline\Programming\" // UPDATE ONCE WE HAVE A PROPER PLACE FOR THE SAMPLE
+global sample_list "$encrypted_path\endline sample" // UPDATE ONCE WE HAVE A PROPER PLACE FOR THE SAMPLE
 global table_name "Tekki_Fii_PV_4"
 global main_table "${table_name}_checked"
 
@@ -133,7 +135,7 @@ cd "$dofiles"
 ** 1. DATA PROCESSING AND PREPARATION (CLEANING AND CORRECTIONS)
 ******************************************
 *do "1.05. ${proj}_${tool}_Decryption.do"
-cd "$dofiles"
+*cd "$dofiles"
 do "1.1. ${proj}_${tool}_Export.do"
 cd "$dofiles"
 do "1.2. ${proj}_${tool}_Clean_Data.do"
@@ -164,6 +166,8 @@ cd "$dofiles"
 ******************************************
 do "4.1. ${proj}_${tool}_Data_Protection.do"
 cd "$dofiles"
+*do "4.2. ${proj}_${tool}_Data_Encryption.do"
+*cd "$dofiles"
 ******************************************
 ** 4. PRELIMINARY ANALYSIS
 ******************************************
