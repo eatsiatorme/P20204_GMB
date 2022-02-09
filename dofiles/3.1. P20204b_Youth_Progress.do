@@ -9,7 +9,7 @@ import delimited using "$sample_list\sample.csv", varnames(1) clear // WILL NEED
 keep id_key
 rename id_key ApplicantID
 
-merge 1:1 ApplicantID using "$corrections\/${table_name}_checked.dta"
+merge 1:1 ApplicantID using "$corrections\Tekki_Fii_PV_3_checked.dta"
 gen submission=(_merge==3)
 label def L_submission 0 "No Submission" 1 "Submitted"
 label val submission L_submission
