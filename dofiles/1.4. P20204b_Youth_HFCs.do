@@ -1,3 +1,5 @@
+/*
+
 *! version 3.0.0 Innovations for Poverty Action 30oct2018
 
 /* =============================================================== 
@@ -361,7 +363,7 @@ if ${run_backcheck} {
       ${bcnolabel} ${bcreplace}
 }
 
-
+*/
 
 ********************************************************************************
 *
@@ -934,15 +936,15 @@ capture confirm string variable Action
 
 			}
 
-replace status = 1 if still_error==3 & Action!="Ignore"
+replace status = 1 if still_error==3 & Action!="No further action"
 replace status = 2 if still_error==1
-replace status = 3 if Action=="Ignore" & status != 2
+replace status = 3 if Action=="No further action" & status != 2
 replace status = 4 if Action=="Back-check"
 
 
 drop still_error
 
-label def l_status 1 "Error still remains" 2 "Error No Longer Remains" 3 "Error Ignored" 4 "Sent for Back-check"
+label def l_status 1 "Error still remains" 2 "Error No Longer Remains" 3 "No further action" 4 "Sent for Back-check"
 label val status l_status
 
 keep status

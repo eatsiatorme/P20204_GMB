@@ -56,7 +56,7 @@ cd "H:\corrections"
 
 	global i=5
 	use $main_table, clear
-	gen error=${i} if pct_conversation<0.3 & status==1
+	gen error=${i} if pct_conversation<0.2 & status==1
 	gen pct_conversation_str = string(pct_conversation, "%2.1f")
 	global keepvar "pct_conversation_str"
 	addErr "Low pitch recording for conversation - Send for back-check"

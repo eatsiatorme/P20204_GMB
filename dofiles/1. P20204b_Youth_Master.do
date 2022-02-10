@@ -42,7 +42,8 @@ global time = string(clock("`c(current_time)'","hms"),"%tcHHMMSS")
 global datetime = "$date"+"$time"
 
 
-global hfc = 1
+global hfc = 0
+global prog = 0
 
 // Round > Cycle > Tool Globals
 global proj "P20204b"
@@ -143,10 +144,13 @@ cd "$dofiles"
 do "1.3. ${proj}_${tool}_Corrections_Data.do"
 cd "$dofiles"
 
-if $hfc == 1 {
+
 ******************************************
 * 2. DATA QUALITY CHECKS
 ******************************************
+do "1.4. P20204b_Youth_HFCs_IPA.do"
+cd "$dofiles"
+if $hfc == 1 {
 do "1.4. ${proj}_${tool}_HFCs.do"
 cd "$dofiles"
 do "1.5. ${proj}_${tool}_Enumerator_Trends.do"
@@ -155,11 +159,14 @@ cd "$dofiles"
 *do "2.2 ${proj}_${tool}_BC_Sample.do"
 *cd "$dofiles"
 }
+
+if $prog == 1 {
 ******************************************
 * 3. FIELDWORK PROGRESS
 ******************************************
 do "3.1. ${proj}_${tool}_Progress.do"
 cd "$dofiles"
+}
 
 ******************************************
 ** 4. DE-IDENTIFICATION OF DATA
