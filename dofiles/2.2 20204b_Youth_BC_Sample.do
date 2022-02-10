@@ -22,14 +22,14 @@ quietly {
 * Macros to enter
 local enumerator_stratification = 1
 local uniform_intervals = 1
-global sampsize = 350
-global field_launch = "01/01/2022"
-global today = "24/01/2022"
+global sampsize = 360
+global field_launch = "09/02/2022"
+global today = "10/02/2022"
 global sub_date "submissiondate"
-local bc_proportion = 0.1
-local intervals = 10
+local bc_proportion = 0.07
+local intervals = 5
 local fl_intervals = 1
-local enum_num = 6 // Automate?
+local enum_num = 9 // Automate?
 global path "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\HFC\backchecks"
 
 
@@ -99,6 +99,10 @@ local total_ : word count  `files' // counts the total number of files
 local next_sample = `total_' + 1
 di "`total_'"
 
+*******************************************************************************
+* Creating the quantiles based on sample size
+*******************************************************************************
+
 
 *******************************************************************************
 * Creating the quantiles based on sample size
@@ -116,7 +120,7 @@ save `bc_dec'
 * Associating quatiles with collected data  
 *******************************************************************************
 
-use "$encrypted_path\corrections\Tekki_Fii_PV_3_checked.dta", clear
+use "$encrypted_path\corrections\/${main_table}.dta", clear
 
 tempvar ${sub_date}_td
 gen `${sub_date}_td' = dofc(${sub_date})
@@ -287,4 +291,20 @@ else {
 	di "No extra cases selected for back-check"
 }
 
+
+********************************************************************************
+* Adding to BC Master List
+********************************************************************************
+
+import excel "$hfc_output\Checking_List_Backcheck.xlsx", clear firstrow cellrange(E2)
+keep ApplicantID 
+
+tempfile additional_bc
+save `additional_bc'
+
 	import delimited using "$path\BC_Sample_Master.csv", clear case(preserve)
+	merge 1:1 ApplicantID using `additional_bc', nogen
+	
+keep ApplicantID 
+
+merge 1:1 ApplicantID using "$encrypted_path\corrections\/${main_table}.dta", keep(3) nogen keepusing(full_name final_phone* z1 interview_date treatment completed_ml whatsapp telegram signal email other_phone other_phone_owner region community age returnee_final institute course tekki_fii_section employer)

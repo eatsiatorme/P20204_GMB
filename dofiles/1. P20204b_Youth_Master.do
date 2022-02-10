@@ -43,7 +43,9 @@ global datetime = "$date"+"$time"
 
 
 global hfc = 0
-global prog = 0
+global progress = 0
+global bc == 0
+
 
 // Round > Cycle > Tool Globals
 global proj "P20204b"
@@ -92,7 +94,7 @@ global exported "$encrypted_path\exported"
 global corrections "$encrypted_path\corrections"
 global cleaning "$encrypted_path\cleaning"
 global qx "$ONEDRIVE\P20204b_EUTF_GMB - Documents\03_Questionnaires\03_Endline\Programming\Tekki_Fii_PV_Endline_WIP.xlsx" // improve this
-global sample_list "$encrypted_path\endline sample" // UPDATE ONCE WE HAVE A PROPER PLACE FOR THE SAMPLE
+global sample_list "$encrypted_path\endline sample"
 global table_name "Tekki_Fii_PV_4"
 global main_table "${table_name}_checked"
 
@@ -155,12 +157,13 @@ do "1.4. ${proj}_${tool}_HFCs.do"
 cd "$dofiles"
 do "1.5. ${proj}_${tool}_Enumerator_Trends.do"
 cd "$dofiles"
-
-*do "2.2 ${proj}_${tool}_BC_Sample.do"
-*cd "$dofiles"
+}
+if $bc == 1 {
+do "2.2 ${proj}_${tool}_BC_Sample.do"
+cd "$dofiles"
 }
 
-if $prog == 1 {
+if $progress == 1 {
 ******************************************
 * 3. FIELDWORK PROGRESS
 ******************************************
