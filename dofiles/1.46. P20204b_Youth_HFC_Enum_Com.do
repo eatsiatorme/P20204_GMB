@@ -77,6 +77,8 @@ save `all_comment', replace
 
 }
 
+duplicates drop comment variable commentsx, force
+
 replace commentsx=upper(commentsx)
 merge m:1 `fname' using "`only_comments'", keep(3) nogen // keepusing(z1 ApplicantID submissiondate)
 gen value = ""

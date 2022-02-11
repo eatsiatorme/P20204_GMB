@@ -806,7 +806,6 @@ decode z1, gen(enumerator)
 *label val z2 z2
 decode z2, gen(supervisor)
 drop z1 z2
-*/
 
 tempfile new_list
 save `new_list' // List of newly added errors
@@ -954,10 +953,13 @@ export excel "$hfc_output\Checking_List.xlsx", sheet("Sheet1", modify) keepcellf
 * CREATING LOCAL PARTNER CHECKING SHEET
 ********************************************************************************
 import excel "$ONEDRIVE\P20204b_EUTF_GMB - Documents\04_Field Work\Share with CepRass\Checking_List_CepRass.xlsx", clear firstrow cellrange(B2)
+
 *keep field_counter error_counter
 drop scto_link
 su field_counter
 local field_check = `r(N)'
+di `field_check'
+
 if `field_check'>0 {
 	local field_check_count = `r(max)'
 	foreach var of varlist variable_* label_* {
@@ -971,7 +973,7 @@ if `field_check'>0 {
 	tempfile already_in_field
 	save `already_in_field'
 }
-
+}
 
 
 import excel "$hfc_output\Checking_List.xlsx", clear firstrow cellrange(A2)

@@ -44,7 +44,8 @@ global datetime = "$date"+"$time"
 
 global hfc = 0
 global progress = 0
-global bc == 0
+global bc = 0
+global trends = 0
 
 
 // Round > Cycle > Tool Globals
@@ -155,9 +156,12 @@ cd "$dofiles"
 if $hfc == 1 {
 do "1.4. ${proj}_${tool}_HFCs.do"
 cd "$dofiles"
+}
+if $trends == 1 {
 do "1.5. ${proj}_${tool}_Enumerator_Trends.do"
 cd "$dofiles"
 }
+
 if $bc == 1 {
 do "2.2 ${proj}_${tool}_BC_Sample.do"
 cd "$dofiles"
