@@ -394,17 +394,17 @@ clonevar shock_fam = shocks_4
 clonevar shock_dem = shocks_5
 clonevar shock_sup = shocks_6
 
-
+***Total number of shocks experienced within the reference period
 cap drop shocks_no
 egen shocks_no=rowtotal(f1_?)
 label variable shocks_no "Number of Shocks"
 
-
+****Mean exposure to shocks within the reference period
 cap drop shock_exposure
 egen shock_exposure=rowmean(f2_?)
 label variable shock_exposure "Mean schock exposure"
 
-
+****Ability to recover from shocks
 cap drop ATR					
 egen ATR= rowmean(f3_?)
 label variable ATR "Ability to Recover"
