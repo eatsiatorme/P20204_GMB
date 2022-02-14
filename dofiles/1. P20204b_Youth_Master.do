@@ -45,7 +45,7 @@ global datetime = "$date"+"$time"
 global hfc = 0
 global progress = 0
 global bc = 0
-global trends = 0
+global trends = 1
 
 
 // Round > Cycle > Tool Globals
@@ -133,6 +133,8 @@ cd "$dofiles"
 }
 
 include "1.01. ${proj}_${tool}_Key_Variables.do"
+
+
 cd "$dofiles"
 
 ******************************************

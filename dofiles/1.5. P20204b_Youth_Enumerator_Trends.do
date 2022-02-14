@@ -1,12 +1,17 @@
+*copy "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\HFC\05_output\Checking List Template\Enumerator_Trends.xlsx"  "$hfc_output\Enumerator_Trends.xlsx", replace
+
+cd "$dofiles"
+include "1.02. ${proj}_${tool}_Mata.do"
+
 cd "H:\corrections"
 use $main_table, clear
 
 
-global n_min = 10 
+global n_min = 7
 global sd = 3
 
-global trigger "d1 b2 c1"
-global outcome "$component_vars_bin $component_vars_cont $outcome_vars_bin $outcome_vars_cont"
+global trigger "d1 b1 b2 c1"
+global outcome "$outcome_vars_bin $outcome_vars_cont"
 
 
 
@@ -42,9 +47,8 @@ foreach var of varlist duration_m $trigger $outcome {
 	
 }
 
-*inttrend duration_m $trigger $outcome using `interviewers', interviewer(z1) 
 
-inttrend duration_m $trigger using `interviewers', interviewer(z1) 
+inttrend duration_m $trigger $outcome using `interviewers', interviewer(z1) 
 use `interviewers', clear
 
 
@@ -119,7 +123,7 @@ if `r(N)' > 0 {
 
 local rowbeg = `r(N)' + 2
 di "`rowbeg'"
-export excel "$hfc_output\Enumerator_Trends.xlsx", sheet("Outlier", replace) keepcellfmt cell(A3)
+export excel "$hfc_output\Enumerator_Trends.xlsx", sheet("Outlier", modify) keepcellfmt cell(A3)
 mata: check_list_format("$hfc_output\Enumerator_Trends.xlsx", "Outlier", "var", 1, 3, `rowbeg', `n_vars')	
 
 }
@@ -163,7 +167,7 @@ use `row_date_enum', clear
 clonevar hours_per_day_p50 = hours_per_day
 collapse (mean)hours_per_day (p50)hours_per_day_p50, by(z1)
 gen high_average=(hours_per_day>6 | hours_per_day_p50>6)
-gen low_average=(hours_per_day<3 | hours_per_day_p50<3)
+gen low_average=(hours_per_day<2 | hours_per_day_p50<2)
 keep if high_average==1 | low_average==1
 keep z1 hours_per_day hours_per_day_p50 high_average low_average
 
@@ -174,7 +178,7 @@ replace flag = 1 if bad_day==1
 replace flag = 2 if high_average==1
 replace flag = 3 if low_average==1
 
-label def l_contact_flag 1 "Enumerator did more than 5 interviews on date" 2 "Enumerator averages 6+ contact hours per day" 3 "Enumerator averages <3 contact hours per day"
+label def l_contact_flag 1 "Enumerator did more than 5 interviews on date" 2 "Enumerator averages 6+ contact hours per day" 3 "Enumerator averages <2 contact hours per day"
 label val flag l_contact_flag
 
 keep z1 flag interview_date interview_per_day hours_per_day hours_per_day_p50

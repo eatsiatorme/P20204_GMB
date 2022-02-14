@@ -56,12 +56,12 @@ local row = 14
 putexcel B`row'=matrix(x)
 
 local row = 23
-tabcount z1 status, v1(1/9) v2(1/5) matrix(y)
+tabcount z1 status, v1(1/10) v2(1/5) matrix(y)
 putexcel B`row'=matrix(y)
 
 fre z1 duration_m
 local row = 22
-forvalues i = 1/9 {
+forvalues i = 1/10 {
 	local rowx = `row'+`i'
 	count if z1==`i' & complete==1
 	if `r(N)' > 0 {
@@ -100,12 +100,12 @@ local row = 14
 putexcel B`row'=matrix(x)
 
 local row = 23
-tabcount z1 status, v1(1/9) v2(1/5) matrix(y)
+tabcount z1 status, v1(1/10) v2(1/5) matrix(y)
 putexcel B`row'=matrix(y)
 
 fre z1 duration_m
 local row = 22
-forvalues i = 1/9 {
+forvalues i = 1/10 {
 	local rowx = `row'+`i'
 	count if z1==`i' & complete==1
 	if `r(N)' > 0 {

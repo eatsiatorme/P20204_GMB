@@ -422,8 +422,9 @@ label var work_inj_`i' "Injured self while working in Job `i'"
 label var work_ill_`i' "Ill while working in Job `i'"
 label var current_emp_inc_month_`i' "Monthly income if employee from Job `i'"
 label var current_profit_month_`i' "Monthly profit if self employed from Job `i'"
-}
 
+label val b17_unit_`i' b17_unit_1
+}
 
 
 
