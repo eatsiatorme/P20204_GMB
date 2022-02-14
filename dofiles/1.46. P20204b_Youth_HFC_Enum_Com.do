@@ -99,6 +99,7 @@ foreach l of local comment_vars {
 		replace label = "`label'" if variable == "`l'" 
 	}
 	else {
+	replace `l' = round(`l')
 	tostring `l', gen(`l'_str)
 	replace value = "`l'" + " = " + `l'_str if variable == "`l'" 
 	local label : variable label `l'
@@ -125,6 +126,7 @@ else {
 				replace label = "`label'" if variable == "`l'" 
 	}
 	else {
+	replace `1' = round(`1')
 	tostring `1', gen(`1'_str)
 	replace  value = value + " " + "`1'" + " = " + `1'_str if variable == "`l'" 
 	local label : variable label `1'
@@ -157,4 +159,5 @@ gen x1 = z1
 gen x2 = z2
 drop z1 z2
 rename (x1 x2) (z1 z2)
+
 export excel "${outfile}", sheet("10. comments", modify) firstrow(var)

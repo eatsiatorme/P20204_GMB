@@ -64,7 +64,7 @@ replace id_key ="9997" if key=="uuid:9d7facee-7f17-4bbe-ab51-d2caa0e1ba93"
 * MERGING IN MEDIA
 **************************************************
 
-ctomergecom, fn(commentsx) mediapath("$media_path")
+*ctomergecom, fn(commentsx) mediapath("$media_path")
 
 tamerge text_audit, media("$local_path")
 foreach var of varlist ta_* {

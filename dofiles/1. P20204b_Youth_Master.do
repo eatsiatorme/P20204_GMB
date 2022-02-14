@@ -45,7 +45,7 @@ global datetime = "$date"+"$time"
 global hfc = 0
 global progress = 0
 global bc = 0
-global trends = 1
+global trends = 0
 
 
 // Round > Cycle > Tool Globals
