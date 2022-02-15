@@ -20,16 +20,16 @@ quietly {
 * Set Macros
 *******************************************************************************
 * Macros to enter
-local enumerator_stratification = 1
+local enumerator_stratification = 0
 local uniform_intervals = 1
 global sampsize = 360
 global field_launch = "09/02/2022"
-global today = "10/02/2022"
+global today = "15/02/2022"
 global sub_date "submissiondate"
-local bc_proportion = 0.07
-local intervals = 5
+local bc_proportion = 0.02
+local intervals = 3
 local fl_intervals = 1
-local enum_num = 9 // Automate?
+local enum_num = 10 // Automate?
 global path "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\HFC\backchecks"
 
 
@@ -89,6 +89,7 @@ if !_rc {
 	save `bc_list'
 }
 
+
 *******************************************************************************
 * Checking to see the total number of sample additions
 *******************************************************************************
@@ -98,6 +99,13 @@ local total_ : word count  `files' // counts the total number of files
 
 local next_sample = `total_' + 1
 di "`total_'"
+
+cd "$sample_list\bc" 
+local files : dir "$sample_list" file "BC_Sample_Add_*.dta", respectcase	
+local bctotal_ : word count  `files' // counts the total number of files
+
+local bcnext_sample = `bctotal_' + 1
+di "`bctotal_'"
 
 *******************************************************************************
 * Creating the quantiles based on sample size
@@ -307,4 +315,104 @@ save `additional_bc'
 	
 keep ApplicantID 
 
-merge 1:1 ApplicantID using "$encrypted_path\corrections\/${main_table}.dta", keep(3) nogen keepusing(full_name final_phone* z1 interview_date treatment completed_ml whatsapp telegram signal email other_phone other_phone_owner region community age returnee_final institute course tekki_fii_section employer)
+merge 1:1 ApplicantID using "$encrypted_path\corrections\/${main_table}.dta", keep(3) nogen keepusing(nameid full_name final_phone* z1 interview_date treatment other_phone age returnee_final institute course tekki_fii_section employer employer_name_1 employer_name_2 employer_name_3)
+
+
+rename ApplicantID id_key
+decode z1, gen(z1_orig)
+rename interview_date date_orig
+
+generate date_orig2 = string(date_orig, "%td")
+drop date_orig
+rename date_orig2 date_orig
+
+
+forvalues i = 1/3 {
+	rename final_phone`i' phone_`i'
+	gen phone_`i'_name = ""
+	gen phone_`i'_rel = .
+}
+
+
+rename other_phone phone_4
+gen phone_4_name = ""
+gen phone_4_rel = .
+
+tostring id_key, gen(id_key_str)
+gen respondents_details=id_key_str + "|" + full_name + "|0|-|-" // generates the respondent details column 
+drop id_key_str
+
+gen now_closed = "NO"
+
+gen callback_time = ""
+gen contacts = ""
+gen best_phone = ""
+gen users = ""
+
+	set seed 53564765 // use random number generator
+	gen rand = uniform() 
+	egen ordering = rank(rand)
+	sort ordering
+	count
+
+	xtile xtile_ordering=ordering, n(2) 
+replace users="amadouessa2019@gmail.com" if xtile_ordering==1
+replace users="mjebou@utg.edu.gm" if xtile_ordering==2
+sort id_key
+
+
+
+#d ;
+order
+respondents_details
+nameid
+id_key	
+users
+z1_orig
+date_orig	
+full_name	
+callback_time	
+contacts	
+best_phone	
+phone_1	
+phone_1_name	
+phone_1_rel	
+phone_2	
+phone_2_name	
+phone_2_rel	
+phone_3	
+phone_3_name	
+phone_3_rel	
+phone_4	
+phone_4_name	
+phone_4_rel	
+treatment	
+now_closed		
+age	
+returnee_final	
+institute	
+course	
+tekki_fii_section	
+employer	
+employer_name_1	
+employer_name_2	
+employer_name_3
+;
+#d cr
+
+sort id_key
+drop rand ordering xtile_ordering final_phone4 final_phone5 z1
+
+if `bctotal_' == 0 {
+	export delimited using "$sample_list\bc\BC_Sample_Master.csv", replace nolabel
+}
+
+if `bctotal_' > 0 {
+	export delimited using "$sample_list\bc\BC_Sample_Add_`next_sample'.csv", replace nolabel
+	tempfile add_`bcnext_sample'
+	save `add_`bcnext_sample''
+	import delimited using "$sample_list\bc\BC_Sample_Master.csv", clear case(preserve)
+	append using `add_`bcnext_sample''
+	export delimited using "$sample_list\bc\BC_Sample_Master.csv", replace nolabel
+}
+
