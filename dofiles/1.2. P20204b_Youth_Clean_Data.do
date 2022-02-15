@@ -324,6 +324,93 @@ clonevar num_econ_ref = b2
 replace num_econ_ref=0 if num_econ_ref==. & completed_interview==1
 label var num_econ_ref "Number of economic activities over reference period"
 
+**** Life Satisfaction (Cantril Ladder)
+**** This is a preliminary analysis. Further categorization into ;'Thriving (7+)' , 'Struggling (6-5)' and 'Suffering (4-)'
+egen life_satisfaction_total = rowmean(p1 p2 p3)
+label var life_satisfaction_total  "Overall Life Satisfaction Score"
+
+gen life_satisfaction_past = p1
+label var life_satisfaction_past "Past Life Satisfaction"
+
+gen life_satisfaction_present = p2
+label var life_satisfaction_present "Present Life Satisfaction"
+
+gen life_satisfaction_future = p3
+label var life_satisfaction_future "Future Life Satisfaction"
+
+****General Self Efficacy (GSE) Score
+*** Source: Schwarzer, R., & Jerusalem, M. (1995). Generalized Self-Efficacy scale. In J. Weinman, S. Wright, & M. Johnston, Measures in health psychology: A user’s portfolio. Causal and control beliefs (pp. 35-37). Windsor, UK: NFER-NELSON.
+
+egen gse_score = rowmean(n1 n2 n3 n4 n5 n6)
+label var gse_score "Generalized Self Efficacy Score"
+
+**** Financial Literacy Scale
+****
+gen r1_correct = 1 if r1 ==200
+gen r2_correct = 1 if r2 ==4
+gen r3_correct = 1 if r3 ==0
+gen r4_correct = 1 if r4 ==102
+gen r5_correct = 1 if r5 ==1|r5 ==2
+egen fl_scale_score = rowtotal (r1_correct r2_correct r3_correct r4_correct r5_correct)
+label var fl_scale_score "Total Financial Literacy Score"
+
+****Household Characteristics
+***
+clonevar hh_size = a3
+label var hh_size "Houshold Size (Including respondent)"
+
+clonevar hh_size_chil = a12
+label var hh_size_chil "Number of Children below 15 years of Age in Household"
+
+clonevar finance_access = t1
+label var finance_access "Taken a loan in the past 1 year"
+
+****Household decision making
+/*Source: https://www.data4impactproject.org/prh/gender/women-and-girls-status-and-empowerment/participation-of-women-in-household-decision-making-index/
+This applies more to women. Needs to be filtered through in the analysis for females only
+*/
+clonevar hh_decision_health = a9
+replace hh_decision_health = 1 if a9 == 1 | a9 ==2
+label var hh_decision_health "Involved in houshold decision on regarding their own health"
+
+clonevar hh_decision_purchase = a10
+replace hh_decision_purchase = 1 if a10 ==1 | a10 ==2
+label var hh_decision_purchase "Involved in household decision on large purchases"
+
+clonevar hh_decision_visit = a11
+replace hh_decision_visit = 1 if a11 ==1 | a11 == 2
+label var hh_decision_visit "Involved in household decisions on who to visit"
+
+
+
+
+
+
+*** Shocks
+clonevar shock_nat = shocks_1
+clonevar shock_agr = shocks_2
+clonevar shock_soc = shocks_3
+clonevar shock_fam = shocks_4
+clonevar shock_dem = shocks_5
+clonevar shock_sup = shocks_6
+
+***Total number of shocks experienced within the reference period
+cap drop shocks_no
+egen shocks_no=rowtotal(f1_?)
+label variable shocks_no "Number of Shocks"
+
+****Mean exposure to shocks within the reference period
+cap drop shock_exposure
+egen shock_exposure=rowmean(f2_?)
+label variable shock_exposure "Mean schock exposure"
+
+****Ability to recover from shocks
+cap drop ATR					
+egen ATR= rowmean(f3_?)
+label variable ATR "Ability to Recover"
+
+
+
 
 ********************************************************************************
 * LABELLING VARIABLES AND VALUES
