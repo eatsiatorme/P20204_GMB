@@ -934,6 +934,16 @@ status
 ;
 #d cr
 
+
+********************************************************************************
+*FIXES FROM FIELD (To be moved to corrections later maybe?)
+********************************************************************************
+/*
+These repondents were not interviewed in the midline on the tekki check because they said they did not participate. However after the phrasing of the question was done differently they confirmed they did participate. However, a problem with the tool did not allow their evaluation of the Tekki Fii programme. A phone call to obtain these particular responses was done on 15.01.2022 by Yusupha Jatta to obtain these responses.
+*/
+
+
+
 save "$cleaning\/$table_name", replace
 
 ********************************************************************************
