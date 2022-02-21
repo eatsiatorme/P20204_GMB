@@ -30,6 +30,7 @@ ssc install bcstats
 ssc install readreplace
 ssc install match
 ssc install fre
+ssc install geodist 
 
 */
 
