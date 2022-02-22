@@ -484,8 +484,8 @@ label var b20__99_`i' "b20. Business officially registered Job `i' [Don't know]"
 *label var b20__95_`i' "b20. Business officially registered Job `i' [None of the above]"
 
 label var b21_`i' "b21. Besides yourself how many workers do you employ Job `i'? "
-label var b22_`i' "b22. Number of hours business is operational in a typical day Job `i'"
-label var b23_`i' "b23. Number of days business is operational in a typical month Job `i'"
+label var b22_`i' "b22. Number of hours worked in business in a typical day Job `i'"
+label var b23_`i' "b23. Number of days worked in business in a typical month Job `i'"
 label var b24_`i' "b24. Sales (GMD) in a typical month of operation of business Job `i' "
 label var b24_unit_`i' "b24. Timeframe of total sales in a typical month of operation of business Job `i'"
 label var b24_unit_s_`i' "b24. Number of months in a [if]season or contract for total sales Job `i'"
@@ -919,7 +919,10 @@ foreach var of varlist b4_? b5_? {
 	gen `var'_dk = .
 }
 
-
+********************************************************************************
+*Removing unnecessary variables
+********************************************************************************
+drop b15_check_1 b16_check_1 b17_unit_check_1 b17_check_1 b17low_check_1 b18_unit_check_1 b18_check_1 employee_pay_check_1 b22_check_1 b24_unit_check_1 b24_check_1 b24low_check_1 b26_unit_check_1 b26first_check_1 profit_month_check_1 b15_check_2 b16_check_2 b17_check_2 b17low_check_2 b18_unit_check_2 b18_check_2 employee_pay_check_2 b22_check_2 b24_check_2 b24low_check_2 b26first_check_2 b15_check_3 b16_check_3 b17_check_3 b17low_check_3 b18_unit_check_3 b18_check_3 employee_pay_check_3 b22_check_3 b24_check_3 b24low_check_3 b26first_check_3 j6_check
 
 ********************************************************************************
 * ORDERING VARIABLES
