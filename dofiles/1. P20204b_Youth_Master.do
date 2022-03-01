@@ -104,6 +104,7 @@ global errorfile "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Wo
 
 global field_work_reports "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\HFC\"
 global checking_log "$field_work_reports\checking_log"
+global backcheck_report_folder "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\06_Field_Work_Reports\Endline\HFC\backchecks"
 
 local checksheet "${main_table}_CHECKS"
 global id ApplicantID
@@ -122,6 +123,7 @@ global social_media "whatsapp telegram signal" // all social media variables
 global email "email"
 global sub_date "submissiondate"
 *global today "06may2021"
+global backcheck_path "$encrypted_path\backcheck"
 
 
 
@@ -166,8 +168,10 @@ cd "$dofiles"
 }
 
 if $bc == 1 {
-do "2.2 ${proj}_${tool}_BC_Sample.do"
+do "2.1. ${proj}_${tool}_BC.do"
 cd "$dofiles"
+*do "2.2 ${proj}_${tool}_BC_Sample.do"
+*cd "$dofiles"
 }
 
 if $progress == 1 {
