@@ -980,7 +980,25 @@ replace tekkifii_check_ind_why = "Sick" if ApplicantID==100303
 replace k18=0 if ApplicantID==100303
 
 **ApplicantID: 100108
-
+replace tekki_institute = 1 if ApplicantID==100108
+replace tekkifii_complete = 1 if ApplicantID==100108
+replace k1 = 4 if ApplicantID==100108
+replace k2 = 5 if ApplicantID==100108
+replace k4 = 4 if ApplicantID==100108
+replace k5 = 5 if ApplicantID==100108
+replace k6 = 4 if ApplicantID==100108
+replace k8 = 4 if ApplicantID==100108
+replace k9 = 4 if ApplicantID==100108
+replace k10 =4 if ApplicantID==100108
+replace k11 =1 if ApplicantID==100108
+replace k12_1=1 if ApplicantID==100108
+replace k13 =0 if ApplicantID==100108
+replace k15 =5 if ApplicantID==100108
+replace k16 =5 if ApplicantID==100108
+replace k17=1 if ApplicantID==100108
+replace k19=0 if ApplicantID==100108
+replace k20=0 if ApplicantID==100108
+replace k18=0 if ApplicantID==100108
 
 **ApplicantID: 100208
 replace tekki_institute = 1 if ApplicantID==100208
