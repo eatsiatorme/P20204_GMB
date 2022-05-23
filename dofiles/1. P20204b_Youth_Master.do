@@ -152,7 +152,7 @@ cd "$dofiles"
 do "1.3. ${proj}_${tool}_Corrections_Data.do"
 cd "$dofiles"
 
-
+/*
 ******************************************
 * 2. DATA QUALITY CHECKS
 ******************************************
@@ -181,7 +181,7 @@ if $progress == 1 {
 do "3.1. ${proj}_${tool}_Progress.do"
 cd "$dofiles"
 }
-
+*/
 ******************************************
 ** 4. DE-IDENTIFICATION OF DATA
 ******************************************

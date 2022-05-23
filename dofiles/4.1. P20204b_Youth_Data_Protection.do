@@ -22,9 +22,9 @@ global data_di "$ONEDRIVE\P20204b_EUTF_GMB - Documents\02_Analysis\02_Data\/$rou
 
 cd "$corrections"
 
-use "$main_table", clear
+use "$table_name", clear
 
-global personal_info "username nameid id1a id1b respondent_name full_name final_phone1 final_phone2 final_phone3 final_phone4 final_phone5 fianl_phone6 email other_phone other_phone_owner employer_name_1 employer_name_2 employer_name_3 loclatitude loclongitude localtitude locaccuracy job_name_? job1 job2 job3 b32_job_name"
+global personal_info "username nameid id1a id1b respondent_name full_name final_phone1 final_phone2 final_phone3 final_phone4 final_phone5 fianl_phone6 email other_phone other_phone_owner employer_name_1 employer_name_2 employer_name_3 loclatitude loclongitude localtitude locaccuracy job_name_? job1 job2 job3 b32_job_name z2 z1 z1_text whatsapp telegram"
 
 
 preserve

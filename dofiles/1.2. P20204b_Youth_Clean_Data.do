@@ -925,6 +925,8 @@ foreach var of varlist b4_? b5_? {
 ********************************************************************************
 drop b15_check_1 b16_check_1 b17_unit_check_1 b17_check_1 b17low_check_1 b18_unit_check_1 b18_check_1 employee_pay_check_1 b22_check_1 b24_unit_check_1 b24_check_1 b24low_check_1 b26_unit_check_1 b26first_check_1 profit_month_check_1 b15_check_2 b16_check_2 b17_check_2 b17low_check_2 b18_unit_check_2 b18_check_2 employee_pay_check_2 b22_check_2 b24_check_2 b24low_check_2 b26first_check_2 b15_check_3 b16_check_3 b17_check_3 b17low_check_3 b18_unit_check_3 b18_check_3 employee_pay_check_3 b22_check_3 b24_check_3 b24low_check_3 b26first_check_3 j6_check
 
+drop deviceid subscriberid devicephonenum mean_light_level min_light_level max_light_level sd_light_level mean_movement sd_movement min_movement max_movement mean_sound_level min_sound_level max_sound_level sd_sound_level mean_sound_pitch min_sound_pitch max_sound_pitch sd_sound_pitch pct_quiet pct_still pct_moving pct_conversation light_level movement sound_level sound_pitch conversation commentsx duration caseid instance_time text_audit id2_check_consistency id2_check id2_check_dk ta_id2_check_consistency ta_id2_bad id2_c4ed ta_note135 ta_Z2 ta_Z1 ta_nameid ta_respondent_found ta_consent ta_availability ta_time_start ta_note245 ta_id1a ta_id1b ta_id1_check ta_id2 ta_id5 ta_a3 ta_a4 ta_a5 ta_a5_other ta_a12 ta_a7 ta_a8 ta_note_decision ta_a9 ta_a10 ta_a11 ta_setuplf ta_d1 ta_d2 ta_d12 ta_d7 ta_d8 ta_sectionBsetup ta_b1a ta_stablejobsetup ta_b1 ta_b2 ta_note7876 ta_job_name ta_b3 ta_b4 ta_b6 ta_generated_note_name_209 ta_job_category ta_b9 ta_b9a ta_b11 ta_b12 ta_b13 ta_b14 ta_note50 ta_b14a ta_b14b ta_b14c ta_b14d ta_b14e ta_b14f ta_b15 ta_b16 ta_income_setup1 ta_b17 ta_b17_unit ta_b18_a ta_employee_pay_check ta_note31 ta_b31a ta_sectionCsetup ta_c1_normal ta_c1 ta_c3 ta_c2 ta_c5 ta_c4 ta_setup_satisfaction ta_p1 ta_p2 ta_p3 ta_setup_finance ta_t1 ta_t6 ta_t7 ta_sectionEsetup ta_e0 ta_e1 ta_e2 ta_e3 ta_e4 ta_e5 ta_e6 ta_e7 ta_e8 ta_e9 ta_e10 ta_note32 ta_n1 ta_n2 ta_n3 ta_n4 ta_n5 ta_n6 ta_note48959 ta_h2 ta_h4 ta_h5 ta_h6 ta_note4895664 ta_r1 ta_r2 ta_r3 ta_r4 ta_r5 ta_note12 ta_i1 ta_i2 ta_i3 ta_i4 ta_i5 ta_i6 ta_note30 ta_shocks ta_j1a ta_f1 ta_f2 ta_f3 ta_k18 ta_a6 ta_completed_questions ta_job_name_1 ta_b3_1 ta_b4_1 ta_b6_1 ta_generated_note_name_209_1 ta_job_category_1 ta_b9_1 ta_b9a_1 ta_b20 ta_b21 ta_note55 ta_b21a ta_b21b ta_b21c ta_b21d ta_b21e ta_b21f ta_b22 ta_b23 ta_income_setup2 ta_b24 ta_b24_unit ta_b26 ta_b26_unit ta_b11_1 ta_b12_1 ta_b13_1 ta_b14_1 ta_note50_1 ta_b14a_1 ta_b14b_1 ta_b14c_1 ta_b14d_1 ta_b14e_1 ta_b14f_1 ta_b15_1 ta_b16_1 ta_income_setup1_1 ta_b17_1 ta_b17_unit_1 ta_b18_a_1 ta_employee_pay_check_1 ta_b31b ta_b31c ta_job_name_2 ta_b3_2 ta_b4_2 ta_b6_2 ta_generated_note_name_209_2 ta_job_category_2 ta_b9_2 ta_b9a_2 ta_b11_2 ta_b12_2 ta_b13_2 ta_b14_2 ta_note50_2 ta_b14a_2 ta_b14b_2 ta_b14c_2 ta_b14d_2 ta_b14e_2 ta_b14f_2 ta_b15_2 ta_b16_2 ta_income_setup1_2 ta_b17_2 ta_b17_unit_2 ta_b18_a_2 ta_employee_pay_check_2 ta_f1_1 ta_f2_1 ta_f3_1 ta_f1_2 ta_f2_2 ta_f3_2 ta_f1_3 ta_f2_3 ta_f3_3 ta_profit_month_check ta_b27 ta_c1_normal_month ta_h1 ta_h7 ta_h8 ta_h9 ta_h10 ta_h11 ta_h12 ta_h13 ta_note34566 ta_dlabels ta_d3a ta_d3b ta_d3d ta_d3e ta_d3f ta_d4b ta_d4c ta_d4d ta_d4f ta_note34 ta_dlabels2 ta_d5a ta_d5b ta_d5e ta_b12_other ta_f1_4 ta_f2_4 ta_f3_4 ta_f1_5 ta_f2_5 ta_f3_5 ta_f1_6 ta_f2_6 ta_f3_6 ta_tekki_institute ta_tekkifii_complete ta_note14 ta_k1 ta_k2 ta_k4 ta_k5 ta_note15 ta_k6 ta_k8 ta_k9 ta_k10 ta_k11 ta_tekkifii_check_ind ta_b1b ta_isic_1 ta_b5 ta_b16_check ta_note13 ta_j3 ta_j4 ta_j5 ta_j6 ta_j7 ta_j4_other ta_j8 ta_b18 ta_b18_unit ta_b35 ta_b36 ta_d2_other ta_b11_other ta_t2 ta_t3 ta_id2_check_consistency ta_d7_other ta_b1c ta_b1c_other ta_b5_error ta_c2_check ta_b24_unit_s ta_b26_unit_s ta_b20_other ta_tekki_course ta_tekki_institute_applied ta_tekki_course_applied ta_isic_1_1 ta_isic_1_2 ta_k12 ta_tekkifii_check_ind_why ta_b20_1 ta_b20_other_1 ta_b21_1 ta_note55_1 ta_b21a_1 ta_b21b_1 ta_b21c_1 ta_b21d_1 ta_b21e_1 ta_b21f_1 ta_b22_1 ta_b23_1 ta_income_setup2_1 ta_b24_1 ta_b24_unit_1 ta_b26_1 ta_b26_unit_1 ta_profit_month_check_1 ta_b27_1 ta_b20_2 ta_b20_other_2 ta_b21_2 ta_note55_2 ta_b21a_2 ta_b21b_2 ta_b21c_2 ta_b21d_2 ta_b21e_2 ta_b21f_2 ta_b22_2 ta_b23_2 ta_income_setup2_2 ta_b24_2 ta_b24_unit_2 ta_b26_2 ta_b26_unit_2 ta_profit_month_check_2 ta_b27_2 ta_job_name_3 ta_b3_3 ta_b4_3 ta_b6_3 ta_generated_note_name_209_3 ta_job_category_3 ta_b9_3 ta_b9a_3 ta_b20_3 ta_b20_other_3 ta_b21_3 ta_note55_3 ta_b21a_3 ta_b21b_3 ta_b21c_3 ta_b21d_3 ta_b21e_3 ta_b21f_3 ta_b22_3 ta_b23_3 ta_income_setup2_3 ta_b24_3 ta_b24_unit_3 ta_b24_check ta_b26_3 ta_b26_unit_3 ta_b26first_check ta_profit_month_check_3 ta_b26_check_3 ta_b27_3 ta_t4 ta_b26_check_2 ta_c4_check_normal ta_b24low_check ta_b26_check ta_t5 ta_t5_other ta_b9a_other ta_t2_other ta_b15_check ta_tekkifii_dropout ta_cc7 ta_b17_unit_s ta_b17_check ta_b35_1 ta_b35_2 ta_k13 ta_k14 ta_note16 respondent_found consent availability ta_b11_3 ta_b12_3 ta_b13_3 ta_b14_3 ta_note50_3 ta_b14a_3 ta_b14b_3 ta_b14c_3 ta_b14d_3 ta_b14e_3 ta_b14f_3 ta_b16_3 ta_income_setup1_3 ta_b17_3 ta_b17_unit_3 ta_b18_a_3 ta_employee_pay_check_3 ta_tekkifii_absent_unsucc ta_t6_other ta_b5_1 ta_b5_2 ta_b17low_check ta_b5_3 ta_j6_check ta_b12_other_1 ta_b12_other_2 ta_refused ta_b18_unit_1 ta_b18_2 ta_b18_unit_2 ta_isic_1_3 ta_k12_other ta_b6oth ta_note_takehome
+
 ********************************************************************************
 * ORDERING VARIABLES
 ********************************************************************************
@@ -935,88 +937,295 @@ full_name
 treatment
 formdef_version
 status
+id1_check 
+id2 
+id3 
+id5
+id5_other
+a1a 
+a1b 
+a2 
+a3 
+a4 
+a5 
+a5_other 
+a12 
+a7 
+a8 
+a10 
+a11
+a9
+d1 
+d2_1 
+d2_2 
+d2_4 
+d2_5 
+d2_6 
+d2_7 
+d2_8 
+d2_9 
+d2_96 
+d2_other 
+d12_1 
+d12_2 
+d12_3 
+d12_4 
+d12_5 
+d12_6 
+d12_other 
+dlabels 
+d3a 
+d3b 
+d3d 
+d3f 
+d4b 
+d4d 
+d4f 
+dlabels2 
+d5a 
+d5b 
+d5e 
+d7 
+d7_1 
+d7_2 
+d7_3 
+d7_4 
+d7_5 
+d7_6 
+d7_96 
+d7_other 
+d8
+d2_3 
+d3e 
+d4c 
+d7_0 
+b1a 
+b1a_1 
+b1a_2 
+b1a_3 
+b1a_4 
+b1a_5 
+b1a_6 
+b1a_7 
+emp_ilo 
+b1b 
+b1c 
+b1c_other 
+b1 
+b2 
+b2_ifmiss 
+earningsid_1 
+b3_1 b6oth_1 
+job_category_1 
+isic_1_1 
+isic_2_1 
+b9a_1 
+b9a_other_1 
+b11_1 
+b11_other_1 
+b12_1 
+b12_1_1 
+b12_2_1 
+b12_4_1 
+b12_5_1 
+b12_6_1 
+b12__96_1 
+b12__97_1 
+b12__99_1 
+b12_other_1 
+b13_1 
+b14_1 
+b14a_1 
+b14b_1 
+b14c_1 
+b14d_1 
+b14e_1 
+b14f_1 
+b15_1 
+b16_1
+total_wrk_hours_1 
+b17_1 
+b17_unit_1 
+b17_unit_s_1 
+b17_unit_val_1 
+b17_month_1 
+b17_weekly_1 
+b17_daily_1 
+b17_contract_1 
+emp_inc_month_1 
+b18_a_1 
+b18_1 
+b18_unit_1 
+b18_unit_s_1 
+b18_unit_val_1 
+b18_month_1 
+b18_weekly_1 
+b18_daily_1 
+b18_contract_1 
+emp_inkind_month_1 
+emp_month_est_1 
+b20_1 
+b20_1_1 
+b20_2_1 
+b20_3_1 
+b20_4_1 
+b20_5_1 
+b20__96_1 
+b20__97_1 
+b20__99_1 
+b20_other_1 
+b21_1 
+b21a_1 
+b21b_1 
+b21c_1 
+b21d_1 
+b21e_1 
+b21f_1 
+b22_1 
+b23_1 
+total_wrk_hours_se_1 
+b24_1 
+b24_unit_1 
+b24_unit_s_1 
+b24_unit_val_1 
+b24_month_1 
+b24_weekly_1 
+b24_contract_1 
+b26_1 
+b26_unit_1 
+b26_unit_s_1 
+b26_unit_val_1 
+b26_month_1 
+b26_weekly_1 
+b26_daily_1 
+b26_contract_1 
+profit_month_1 
+b27_1 
+b29_b_1 
+b30_1 
+b30_1_1 
+b30_2_1 
+b30_3_1 
+b30_4_1 
+b30_5_1 
+b30_6_1 
+b30_7_1 
+b30_8_1 
+b30_9_1 
+b30_10_1 
+b30_11_1 
+b30_12_1 
+b30_other_1 
+b35_1 
+b36_1_1 
+b36_2_1 
+b36_3_1 
+b36__96_1 
+b36__97_1 
+b36_other_1 
+earningsid_2 
+b3_2 iswas_2 
+havewere_2 
+dodid_2 
+b6oth_2 
+isic_1_2 
+isic_2_2 
+b9_2 
+b9a_2
+b9a_other_2 
+b11_2 
+b11_other_2 
+b12_2 
+b12_1_2 
+b12_2_2 
+b12_3_2 
+b12_4_2 
+b12_5_2 
+b12_6_2 
+b12__96_2 
+b12__97_2 
+b12__99_2 
+b12_other_2 
+b13_2 
+b14_2 
+b14a_2 
+b14b_2 
+b14c_2 
+b14d_2 
+b14e_2 
+b14f_2 
+b15_2 
+b16_2 
+total_wrk_hours_2 
+b17_2 
+b17_unit_2 
+b17_unit_check_2 
+b17_unit_val_2 
+b17_month_2 
+b17_weekly_2 
+b17_daily_2 
+b17_contract_2 
+emp_inc_month_2 
+b18_a_2 
+b18_2 
+b18_unit_2 
+b18_unit_s_2 
+b18_unit_val_2 
+b18_month_2 
+b18_weekly_2 
+b18_daily_2 
+b18_contract_2 
+emp_inkind_month_2 
+emp_month_est_2 
+b20_1_2 
+b20_2_2 
+b20_3_2 
+b20_4_2 
+b20__96_2 
+b20__97_2 
+b20__99_2 
+b20_other_2 
+b21_2 
+b21a_2 
+b21b_2 
+b21c_2 
+b21d_2 
+b21e_2 
+b21f_2 
+b22_2 
+b23_2 
+total_wrk_hours_se_2 
+b24_2 
+b24_unit_2 
+b24_unit_s_2 
+b24_unit_check_2 
+b24_unit_val_2 
+b24_month_2 
+b24_weekly_2 
+b24_daily_2 
+b24_contract_2 
+sales_month_2 
+b26_2 
+b26_unit_2 
+b26_unit_s_2 
+b26_unit_check_2 
+b26_unit_val_2 
+b26_weekly_2 
+b26_daily_2 
+b26_contract_2 
+profit_month_2 
+profit_month_check_2 
+b27_2 
+b29_b_2 
+b30_2
 ;
 #d cr
 
 
-********************************************************************************
-*FIXES FROM FIELD (To be moved to corrections later maybe?)
-********************************************************************************
-/*
-These repondents were not interviewed in the midline on the tekki check because they said they did not participate. However after the phrasing of the question was done differently they confirmed they did participate. However, a problem with the tool did not allow their evaluation of the Tekki Fii programme. A phone call to obtain these particular responses was done on 15.01.2022 by Yusupha Jatta to obtain these responses.
-*/
-**ApplicantID: 100143
-replace tekki_institute = 1 if ApplicantID==100143
-replace tekkifii_complete = 1 if ApplicantID==100143
-replace k1 = 4 if ApplicantID==100143
-replace k2 = 4 if ApplicantID==100143
-replace k4 = 3 if ApplicantID==100143
-replace k5 = 3 if ApplicantID==100143
-replace k6 = 4 if ApplicantID==100143
-replace k8 = 4 if ApplicantID==100143
-replace k9 = 5 if ApplicantID==100143
-replace k10 =5 if ApplicantID==100143
-replace k11 = 1 if ApplicantID==100143
-replace k12_1= 1 if ApplicantID==100143
-replace k12_5 =5 if ApplicantID==100143
-replace tekkifii_check_ind = 0 if ApplicantID==100143
-replace tekkifii_check_ind_why = "Because of covid" if ApplicantID==100143
-replace k18=0 if ApplicantID==100143
-
-**ApplicantID: 100303
-replace tekki_institute = 1 if ApplicantID==100303
-replace tekkifii_complete = 1 if ApplicantID==100303
-replace k1 = 5 if ApplicantID==100303
-replace k2 = 4 if ApplicantID==100303
-replace k4 = 4 if ApplicantID==100303
-replace k5 = 5 if ApplicantID==100303
-replace k6 = 4 if ApplicantID==100303
-replace k8 = 4 if ApplicantID==100303
-replace k9 = 5 if ApplicantID==100303
-replace k10 =4 if ApplicantID==100303
-replace k11 = 0 if ApplicantID==100303
-replace tekkifii_check_ind = 0 if ApplicantID==100303
-replace tekkifii_check_ind_why = "Sick" if ApplicantID==100303
-replace k18=0 if ApplicantID==100303
-
-**ApplicantID: 100108
-replace tekki_institute = 1 if ApplicantID==100108
-replace tekkifii_complete = 1 if ApplicantID==100108
-replace k1 = 4 if ApplicantID==100108
-replace k2 = 5 if ApplicantID==100108
-replace k4 = 4 if ApplicantID==100108
-replace k5 = 5 if ApplicantID==100108
-replace k6 = 4 if ApplicantID==100108
-replace k8 = 4 if ApplicantID==100108
-replace k9 = 4 if ApplicantID==100108
-replace k10 =4 if ApplicantID==100108
-replace k11 =1 if ApplicantID==100108
-replace k12_1=1 if ApplicantID==100108
-replace k13 =0 if ApplicantID==100108
-replace k15 =5 if ApplicantID==100108
-replace k16 =5 if ApplicantID==100108
-replace k17=1 if ApplicantID==100108
-replace k19=0 if ApplicantID==100108
-replace k20=0 if ApplicantID==100108
-replace k18=0 if ApplicantID==100108
-
-**ApplicantID: 100208
-replace tekki_institute = 1 if ApplicantID==100208
-replace tekkifii_complete = 1 if ApplicantID==100208
-replace k1 = 5 if ApplicantID==100208
-replace k2 = 4 if ApplicantID==100208
-replace k4 = 4 if ApplicantID==100208
-replace k5 = 5 if ApplicantID==100208
-replace k6 = 5 if ApplicantID==100208
-replace k8 = 4 if ApplicantID==100208
-replace k9 = 3 if ApplicantID==100208
-replace k10 =4 if ApplicantID==100208
-replace k11 = 0 if ApplicantID==100208
-replace tekkifii_check_ind = 0 if ApplicantID==100208
-replace tekkifii_check_ind_why = "I do not know" if ApplicantID==100208
-replace k18 = 1 if ApplicantID==100208
 
 
+gen enum_ID = z1
+lab var enum_ID "Enumerator ID"
 
 
 
